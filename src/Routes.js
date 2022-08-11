@@ -1,15 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignUp from "../Components/SignUp";
-import SignIn from "../Components/SignIn";
-import Home from "../pages/Core/Home";
-import Wishlist from "../pages/Ecommerce/Wishlist";
-import Cart from "../pages/Ecommerce/Cart";
-import CheckOut from "../pages/Ecommerce/ChecjOut";
-import AboutUs from "../pages/Social/AboutUs";
-import ContacUs from "../pages/Social/ContactUs";
-import Account from "../pages/Social/Account";
-import FourOfour from "../pages/Authentication/Four_O_Four";
+import SignUp from "../src/components/SignUp";
+import SignIn from "../src/components/SignIn";
+import Home from "../src/pages/core/Home";
+import Wishlist from "../src/pages/ecommerce/Wishlist";
+import Cart from "../src/pages/ecommerce/Cart";
+import CheckOut from "../src/pages/ecommerce/CheckOut";
+import AboutUs from "../src/pages/social/AboutUs";
+import ContacUs from "../src/pages/social/ContactUs";
+import Account from "../src/pages/social/Account";
+import FourOfour from "../src/pages/Authentication/Four_O_Four";
+import Shop from "./pages/core/Shop";
 
 const MyRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const MyRoutes = () => {
         <Route path="/signin" exact element={<SignIn />} />
         <Route path="/signup" exact element={<SignUp />} />
         <Route path="/wishlist" exact element={<Wishlist />} />
+        <Route path="/shop" exact element={<Shop />} />
         <Route path="/cart" exact element={<Cart />} />
         <Route path="/checkout" exact element={<CheckOut />} />
         <Route path="/aboutus" exact element={<AboutUs />} />
