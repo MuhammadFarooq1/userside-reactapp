@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Layout from "../../Layouts/ParentLayout";
 import ImgProduct_1_1 from "../../assets/imgs/shop/product-1-2.jpg";
 import ImgProduct_1_2 from "../../assets/imgs/shop/product-11-2.jpg";
 import ImgProduct_1_3 from "../../assets/imgs/shop/product-6-1.jpg";
 import ShowCartImage from "./ShowCartImage";
 
-import {
-  getTotalItemInCart,
-  removeItem,
-  updateItem,
-} from "../../hellper/cartHellper";
+import { getTotalItemInCart } from "../../hellper/cartHellper";
 
 import { Link } from "react-router-dom";
 import CartCard from "../core/CartCard";
@@ -56,76 +52,72 @@ const Cart = () => {
 
   return (
     <Layout title="" discription="" className="">
-      <main className="main">
-        <div className="page-header breadcrumb-wrap">
-          <div className="container">
-            <div className="breadcrumb">
-              <a href="index.html" rel="nofollow">
-                Home
-              </a>
-              <span></span> Shop
-              <span></span> Your Cart
+      <div className="page-header breadcrumb-wrap">
+        <div className="container">
+          <div className="breadcrumb">
+            <a href="index.html" rel="nofollow">
+              Home
+            </a>
+            <span></span> Shop
+            <span></span> Your Cart
+          </div>
+        </div>
+      </div>
+      <section className="mt-50 mb-50">
+        <div className="container">
+          {items ? ShowItems(items) : noItemMessege()}
+          <div className="row">
+            <div className="col-12">
+              <div className="table-responsive">
+                <table className="table shopping-summery text-center clean">
+                  <thead>
+                    <tr className="main-heading">
+                      <th scope="col">Image</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Subtotal</th>
+                      <th scope="col">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {items.map((products, productscartkey) => (
+                      <CartCard
+                        key={productscartkey}
+                        product={products}
+                        setRun={setRun}
+                        run={run}
+                      />
+                    ))}
+
+                    <tr>
+                      <td colSpan="6" className="text-end">
+                        <a href="#" className="text-muted">
+                          <i className="fi-rs-cross-small"></i> Clear Cart
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="cart-action text-end">
+                <a className="btn  mr-10 mb-sm-15">
+                  <i className="fi-rs-shuffle mr-10"></i>Update Cart
+                </a>
+                <a className="btn ">
+                  <i className="fi-rs-shopping-bag mr-10"></i>Continue Shopping
+                </a>
+              </div>
+              <div className="divider center_icon mt-50 mb-50">
+                <i className="fi-rs-fingerprint"></i>
+              </div>
+
+              {/* cart checkout . */}
+              <CheckOut checkOutProducts={items} />
             </div>
           </div>
         </div>
-        <section className="mt-50 mb-50">
-          <div className="container">
-            {items ? ShowItems(items) : noItemMessege()}
-            <div className="row">
-              <div className="col-12">
-                <div className="table-responsive">
-                  <table className="table shopping-summery text-center clean">
-                    <thead>
-                      <tr className="main-heading">
-                        <th scope="col">Image</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Subtotal</th>
-                        <th scope="col">Remove</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {items.map((products, productscartkey) => (
-                        <CartCard
-                          key={productscartkey}
-                          product={products}
-                          setRun={setRun}
-                          run={run}
-                        />
-                      ))}
-
-                      <tr>
-                        <td colSpan="6" className="text-end">
-                          <a href="#" className="text-muted">
-                            {" "}
-                            <i className="fi-rs-cross-small"></i> Clear Cart
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="cart-action text-end">
-                  <a className="btn  mr-10 mb-sm-15">
-                    <i className="fi-rs-shuffle mr-10"></i>Update Cart
-                  </a>
-                  <a className="btn ">
-                    <i className="fi-rs-shopping-bag mr-10"></i>Continue
-                    Shopping
-                  </a>
-                </div>
-                <div className="divider center_icon mt-50 mb-50">
-                  <i className="fi-rs-fingerprint"></i>
-                </div>
-
-                {/* cart checkout . */}
-                <CheckOut products={items} />
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+      </section>
     </Layout>
   );
 };

@@ -1,85 +1,150 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Layout from "../Layouts/ParentLayout";
+import { Navigate } from "react-router-dom";
+import { apiSignin, authenticateToken, isAuthenticated } from "../api's/auth";
+
 const SignIn = () => {
-  return (
-    <Layout title="" discription="" className="">
-      <main className="main">
-        <div className="page-header breadcrumb-wrap">
-          <div className="container">
-            <div className="breadcrumb">
-              <a href="index.html" rel="nofollow">
-                Home
-              </a>
-              <span></span> Pages
-              <span></span> Login / Register
-            </div>
+  const [values, setValues] = useState({
+    email: "faroasoqtest@gmail.com",
+    password: "1as23ede",
+    error: "",
+    loading: false,
+    redirectToReferrer: false,
+  });
+
+  const { email, password, loading, error, redirectToReferrer } = values;
+  const { user } = isAuthenticated();
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+  };
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: false, loading: true });
+    apiSignin({ email, password }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, loading: false });
+      } else {
+        authenticateToken(data, () => {
+          setValues({
+            ...values,
+            // email: "",
+            // password: "",
+            // error: "",
+            // loading: false,
+            redirectToReferrer: true,
+          });
+        });
+      }
+    });
+  };
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
+    >
+      {error}
+    </div>
+  );
+  const showLoading = () =>
+    loading && (
+      <div className="alert alert-info">
+        <h2>Loading...</h2>
+      </div>
+    );
+
+  const redirectUser = () => {
+    if (redirectToReferrer) {
+      if (user) {
+        return <Navigate to="/" />;
+      }
+    }
+    if (isAuthenticated()) {
+      return <Navigate to="/" />;
+    }
+  };
+
+  const SignInForm = () => (
+    <Fragment>
+      <div className="page-header breadcrumb-wrap">
+        <div className="container">
+          <div className="breadcrumb">
+            <a href="index.html" rel="nofollow">
+              Home
+            </a>
+            <span></span> Pages
+            <span></span> Login
           </div>
         </div>
-        <section className="pt-150 pb-150">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-10 m-auto">
-                <div className="row">
-                  <div className="col-lg-5">
-                    <div className="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
-                      <div className="padding_eight_all bg-white">
-                        <div className="heading_s1">
-                          <h3 className="mb-30">Login</h3>
-                        </div>
-                        <form method="post">
-                          <div className="form-group">
-                            <input
-                              type="text"
-                              required=""
-                              name="email"
-                              placeholder="Your Email"
-                            />
-                          </div>
-                          <div className="form-group">
-                            <input
-                              required=""
-                              type="password"
-                              name="password"
-                              placeholder="Password"
-                            />
-                          </div>
-                          <div className="login_footer form-group">
-                            <div className="chek-form">
-                              <div className="custome-checkbox">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  name="checkbox"
-                                  id="exampleCheckbox1"
-                                  value=""
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="exampleCheckbox1"
-                                >
-                                  <span>Remember me</span>
-                                </label>
-                              </div>
-                            </div>
-                            <a className="text-muted" href="#">
-                              Forgot password?
-                            </a>
-                          </div>
-                          <div className="form-group">
-                            <button
-                              type="submit"
-                              className="btn btn-fill-out btn-block hover-up"
-                              name="login"
-                            >
-                              Log in
-                            </button>
-                          </div>
-                        </form>
+      </div>
+      <section className="pt-150 pb-150">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-10 m-auto">
+              <div className="row">
+                <div className="col-lg-5">
+                  <div className="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                    <div className="padding_eight_all bg-white">
+                      <div className="heading_s1">
+                        <h3 className="mb-30">Login</h3>
+                        {showError()}
+                        {showLoading()}
                       </div>
+                      <form>
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            onChange={handleChange("email")}
+                            required=""
+                            name="email"
+                            value={email}
+                            // placeholder="Your Email"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            required=""
+                            type="password"
+                            name="password"
+                            onChange={handleChange("password")}
+                            value={password}
+                            // placeholder="Password"
+                          />
+                        </div>
+                        <div className="login_footer form-group">
+                          <div className="chek-form">
+                            <div className="custome-checkbox">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                name="checkbox"
+                                id="exampleCheckbox1"
+                                value=""
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="exampleCheckbox1"
+                              >
+                                <span>Remember me</span>
+                              </label>
+                            </div>
+                          </div>
+                          <a className="text-muted">Forgot password?</a>
+                        </div>
+                        <div className="form-group">
+                          <button
+                            type="submit"
+                            onClick={clickSubmit}
+                            className="btn btn-fill-out btn-block hover-up"
+                          >
+                            Log in
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
-                  <div className="col-lg-1"></div>
-                  <div className="col-lg-6">
+                </div>
+                <div className="col-lg-1"></div>
+                {/* <div className="col-lg-6">
                     <div className="login_wrap widget-taber-content p-30 background-white border-radius-5">
                       <div className="padding_eight_all bg-white">
                         <div className="heading_s1">
@@ -180,13 +245,20 @@ const SignIn = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </div> */}
               </div>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+    </Fragment>
+  );
+
+  return (
+    <Layout title="" discription="" className="">
+      {SignInForm()}
+      {redirectUser()}
+      {JSON.stringify(values)}
     </Layout>
   );
 };

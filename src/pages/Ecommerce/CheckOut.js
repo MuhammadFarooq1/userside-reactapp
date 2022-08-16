@@ -1,12 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
-import Layout from "../../Layouts/ParentLayout";
-import ImgShop_1 from "../../assets/imgs/shop/product-1-1.jpg";
-import ImgShop_2 from "../../assets/imgs/shop/product-2-1.jpg";
-import ImgShop_3 from "../../assets/imgs/shop/product-3-1.jpg";
 import ShowCartImage from "../ecommerce/ShowCartImage.js";
-const CheckOut = ({ products }) => {
+const CheckOut = ({ checkOutProducts }) => {
   const getTotal = () => {
-    return products.reduce((currentValue, nextValue) => {
+    return checkOutProducts.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);
   };
@@ -769,19 +765,16 @@ const CheckOut = ({ products }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((product, productscartkey) => (
-                        <tr key={productscartkey}>
+                      {checkOutProducts.map((product, productscheckoutkey) => (
+                        <tr key={productscheckoutkey}>
                           <td className="image product-thumbnail">
                             <ShowCartImage item={product} url="product" />
                           </td>
                           <td>
                             <h5>
-                              <a href="shop-product-full.html">
-                                {product.name}
-                              </a>
-                            </h5>{" "}
+                              <a>{product.name}</a>
+                            </h5>
                             <span className="product-qty">
-                              {" "}
                               {product.subCategory.name}
                             </span>
                           </td>

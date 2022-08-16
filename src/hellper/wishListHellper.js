@@ -19,7 +19,7 @@ export function AddItemwishList(item, next) {
 }
 
 // count the total item in the mywishList
-export const countTotalAddItemInwishList = () => {
+export const countTotalAddItemInWishList = () => {
   if (typeof window !== "undefined") {
     if (localStorage.getItem("wishList")) {
       return JSON.parse(localStorage.getItem("wishList")).length;
@@ -55,15 +55,15 @@ export const updateItemwishList = (productId, count) => {
 export const removeItemwishList = (productId) => {
   let mywishList = [];
   if (typeof window !== "undefined") {
-    if (localStorage.getItem("mywishList")) {
-      mywishList = JSON.parse(localStorage.getItem("mywishList"));
+    if (localStorage.getItem("wishList")) {
+      mywishList = JSON.parse(localStorage.getItem("wishList"));
     }
     mywishList.map((product, i) => {
       if (product._id === productId) {
         mywishList.splice(i, 1);
       }
     });
-    localStorage.setItem("mywishList", JSON.stringify(mywishList));
+    localStorage.setItem("wishList", JSON.stringify(mywishList));
   }
   return mywishList;
 };

@@ -10,8 +10,12 @@ import Imgthbnail_3 from "../assets/imgs/shop/thumbnail-3.jpg";
 import Imgthbnail_2 from "../assets/imgs/shop/thumbnail-2.jpg";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { countTotalAddItemInCart } from "../hellper/cartHellper";
+import { countTotalAddItemInWishList } from "../hellper/wishListHellper";
+import { logout, isAuthenticated } from "../api's/auth";
 const Header = () => {
+  let navigate = useNavigate();
   return (
     <Fragment>
       <header className="header-area header-style-4 header-height-2">
@@ -122,7 +126,9 @@ const Header = () => {
                           alt="Evara"
                           src={ImgIconHeart}
                         />
-                        <span className="pro-count blue">4</span>
+                        <span className="pro-count blue">
+                          {countTotalAddItemInWishList()}
+                        </span>
                       </Link>
                     </div>
                     <div className="header-action-icon-2">
@@ -1014,16 +1020,119 @@ const Header = () => {
                         {" "}
                         <Link to={"/contactus"}> Contact</Link>
                       </li>
+                      <li className="ml-100">
+                        <a>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            fill="currentColor"
+                            className="bi bi-person-lines-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                          </svg>
+                        </a>
+                        <ul className="sub-menu">
+                          {isAuthenticated() && (
+                            <li>
+                              <Link to={"/user/dashboard"}>Account</Link>
+                            </li>
+                          )}
+                          {!isAuthenticated() && (
+                            <>
+                              <li>
+                                <Link to={"/signin"}> login</Link>
+                              </li>
+                              <li>
+                                <Link to={"/signup"}> register</Link>
+                              </li>
+                            </>
+                          )}
+                          <li>
+                            <Link to={"/404"}> 404 Page</Link>
+                          </li>
+                          {isAuthenticated() && (
+                            <li>
+                              <i
+                                className=" ml-15   "
+                                onClick={() =>
+                                  logout(() => {
+                                    navigate("/");
+                                  })
+                                }
+                              >
+                                Logout
+                              </i>
+                            </li>
+                          )}
+                        </ul>
+                      </li>
                     </ul>
                   </nav>
                 </div>
               </div>
-              <div className="hotline d-none d-lg-block">
-                <p>
+
+              {/* <div className="hotline d-none d-lg-block">
+                {/* <p>
                   <i className="fi-rs-headset"></i>
                   <span>Hotline</span> 1900 - 888{" "}
-                </p>
-              </div>
+                </p> 
+                <div className="main-menu main-menu-padding-1 pl-100 main-menu-lh-2 d-none d-lg-block">
+                  <nav>
+                    <ul>
+                      <li>
+                        <a>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            fill="currentColor"
+                            className="bi bi-person-lines-fill"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                          </svg>
+                        </a>
+                        <ul className="sub-menu">
+                          {isAuthenticated() && (
+                            <li>
+                              <Link to={"/user/dashboard"}>Account</Link>
+                            </li>
+                          )}
+                          {!isAuthenticated() && (
+                            <>
+                              <li>
+                                <Link to={"/signin"}> login</Link>
+                              </li>
+                              <li>
+                                <Link to={"/signup"}> register</Link>
+                              </li>
+                            </>
+                          )}
+                          <li>
+                            <Link to={"/404"}> 404 Page</Link>
+                          </li>
+                          {isAuthenticated() && (
+                            <li>
+                              <i
+                                className=" ml-15   "
+                                onClick={() =>
+                                  logout(() => {
+                                    navigate("/");
+                                  })
+                                }
+                              >
+                                Logout
+                              </i>
+                            </li>
+                          )}
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div> */}
               <p className="mobile-promotion">
                 Happy <span className="text-brand">Mother's Day</span>. Big Sale
                 Up to 40%

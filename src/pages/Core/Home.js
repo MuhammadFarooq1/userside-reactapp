@@ -4,6 +4,7 @@ import {
   getProductsBySellByArrival,
   getPopularCategories,
 } from "../../api's/ecommerceApi/productApi.js";
+
 import { Link } from "react-router-dom";
 import Layout from "../../Layouts/ParentLayout";
 import QuickView from "../ecommerce/QuickView";
@@ -47,6 +48,10 @@ import Shop from "./Shop.js";
 import Search from "./SearchBar.js";
 import { AddItemCart } from "../../hellper/cartHellper.js";
 import Card from "./Card.js";
+import Carousel from "../../Layouts/Carosusel.js";
+import PopularCategoriesCarousel from "../ecommerce/PopularCategories.js";
+import ProductByArrivalCarousel from "../ecommerce/ProductByArrivalSlider.js";
+
 const Home = () => {
   const [qiuckView, setQuickView] = useState(false);
   const [allProducts, setallProducts] = useState([]);
@@ -106,6 +111,7 @@ const Home = () => {
       <Fragment>
         {/* <Search /> */}
         {/* <!-- Quick view --> */}
+
         <div
           className="modal fade custom-modal"
           id="quickViewModal"
@@ -435,7 +441,59 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* <section className="home-slider position-relative mb-30">
+          <div className="container">
+            <div className="home-slide-cover bg-grey-10 mt-30">
+              <Carousel />
+            </div>
+          </div>
+        </section> */}
+
         <section className="home-slider position-relative mb-30">
+          <div className="container">
+            <div className="home-slide-cover bg-grey-10 mt-30">
+              <div className="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
+                <div className="single-hero-slider single-animation-wrap">
+                  <div className="container">
+                    <div className="row align-items-center slider-animated-1">
+                      <div className="col-lg-5 col-md-6">
+                        <div className="hero-slider-content-2">
+                          <h4 className="animated">Trade-In Offer</h4>
+                          <h3 className="animated fw-900">
+                            Supper Value Deals
+                          </h3>
+                          <h2 className="animated fw-900 text-brand">
+                            On All Products
+                          </h2>
+                          <p className="animated">
+                            Save more with coupons & up to 70% off
+                          </p>
+                          <a
+                            className="animated btn btn-brush btn-brush-3"
+                            href="shop-product-right.html"
+                            tabIndex="0"
+                          >
+                            {" "}
+                            Shop Now{" "}
+                          </a>
+                        </div>
+                      </div>
+                      <div className="col-lg-7 col-md-6">
+                        <div className="single-slider-img single-slider-img-1">
+                          <Carousel />{" "}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="slider-arrow hero-slider-1-arrow"></div>
+            </div>
+          </div>
+        </section>
+
+        {/* <section className="home-slider position-relative mb-30">
           <div className="container">
             <div className="home-slide-cover bg-grey-10 mt-30">
               <div className="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
@@ -507,7 +565,8 @@ const Home = () => {
               <div className="slider-arrow hero-slider-1-arrow"></div>
             </div>
           </div>
-        </section>
+        </section> */}
+
         <section className="banners mb-20">
           <div className="container">
             <div className="row">
@@ -826,74 +885,7 @@ const Home = () => {
                           key={keyselling}
                           className="col-lg-4 col-md-4 col-12 col-sm-6"
                         >
-                          <div className="product-cart-wrap mb-30">
-                            <div className="product-img-action-wrap">
-                              <ShowImage
-                                item={productbyselling}
-                                url="product"
-                              />
-
-                              <div className="product-action-1">
-                                <a
-                                  aria-label="Quick view"
-                                  className="action-btn hover-up"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#quickViewModal"
-                                >
-                                  <i className="fi-rs-eye"></i>
-                                </a>
-                                <a
-                                  aria-label="Add To Wishlist"
-                                  className="action-btn hover-up"
-                                  href="shop-wishlist.html"
-                                >
-                                  <i className="fi-rs-heart"></i>
-                                </a>
-                                <a
-                                  aria-label="Compare"
-                                  className="action-btn hover-up"
-                                  href="shop-compare.html"
-                                >
-                                  <i className="fi-rs-shuffle"></i>
-                                </a>
-                              </div>
-                              <div className="product-badges product-badges-position product-badges-mrg">
-                                <span className="hot">Hot</span>
-                              </div>
-                            </div>
-                            <div className="product-content-wrap">
-                              <div className="product-category">
-                                <a href="shop-grid-right.html">
-                                  {productbyselling.subCategory.name}
-                                </a>
-                              </div>
-                              <h2>
-                                <a href="shop-product-right.html">
-                                  {productbyselling.name}
-                                </a>
-                              </h2>
-                              <div className="rating-result" title="90%">
-                                <span>
-                                  <span>90%</span>
-                                </span>
-                              </div>
-                              <div className="product-price">
-                                <span>RS {productbyselling.price} </span>
-                                <span className="old-price">
-                                  RS {productbyselling.discount}
-                                </span>
-                              </div>
-                              <div className="product-action-1 show">
-                                <a
-                                  aria-label="Add To Cart"
-                                  className="action-btn hover-up"
-                                  href="shop-cart.html"
-                                >
-                                  <i className="fi-rs-shopping-bag-add"></i>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
+                          <Card product={productbyselling} />
                         </div>
                       ))}
                     </div>
@@ -913,73 +905,7 @@ const Home = () => {
                             key={keyByArrival}
                             className="col-lg-4 col-md-4 col-12 col-sm-6"
                           >
-                            <div className="product-cart-wrap mb-30">
-                              <div className="product-img-action-wrap">
-                                <ShowImage
-                                  item={ProductByArrival}
-                                  url="product"
-                                />
-                                <div className="product-action-1">
-                                  <a
-                                    aria-label="Quick view"
-                                    className="action-btn hover-up"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#quickViewModal"
-                                  >
-                                    <i className="fi-rs-eye"></i>
-                                  </a>
-                                  <a
-                                    aria-label="Add To Wishlist"
-                                    className="action-btn hover-up"
-                                    href="shop-wishlist.html"
-                                  >
-                                    <i className="fi-rs-heart"></i>
-                                  </a>
-                                  <a
-                                    aria-label="Compare"
-                                    className="action-btn hover-up"
-                                    href="shop-compare.html"
-                                  >
-                                    <i className="fi-rs-shuffle"></i>
-                                  </a>
-                                </div>
-                                <div className="product-badges product-badges-position product-badges-mrg">
-                                  <span className="hot">Hot</span>
-                                </div>
-                              </div>
-                              <div className="product-content-wrap">
-                                <div className="product-category">
-                                  <a href="shop-grid-right.html">
-                                    Music {ProductByArrival.subCategory.name}
-                                  </a>
-                                </div>
-                                <h2>
-                                  <a href="shop-product-right.html">
-                                    {ProductByArrival.name}
-                                  </a>
-                                </h2>
-                                <div className="rating-result" title="90%">
-                                  <span>
-                                    <span>90%</span>
-                                  </span>
-                                </div>
-                                <div className="product-price">
-                                  <span>RS {ProductByArrival.price}</span>
-                                  <span className="old-price">
-                                    RS {ProductByArrival.discount}
-                                  </span>
-                                </div>
-                                <div className="product-action-1 show">
-                                  <a
-                                    aria-label="Add To Cart"
-                                    className="action-btn hover-up"
-                                    href="shop-cart.html"
-                                  >
-                                    <i className="fi-rs-shopping-bag-add"></i>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
+                            <Card product={ProductByArrival} />
                           </div>
                         )
                       )}
@@ -1012,18 +938,20 @@ const Home = () => {
             </div>
           </div>
         </section>
+
         <section className="popular-categories section-padding mt-15">
           <div className="container wow fadeIn animated">
             <h3 className="section-title mb-20">
               <span>Popular</span> Categories
             </h3>
-            <div className="carausel-6-columns-cover position-relative">
-              <div
-                className="slider-arrow slider-arrow-2 carausel-6-columns-arrow"
-                id="carausel-6-columns-arrows"
-              ></div>
-              <div className="carausel-6-columns" id="carausel-6-columns">
-                {popularCategoies.map((popularCategory, keyPopularCategory) => (
+            <div className=" position-relative">
+              <div className="slider-arrow slider-arrow-2 carausel-6-columns-arrow"></div>
+              <div className="carausel-6-columns">
+                <PopularCategoriesCarousel
+                  PopularCategoriesSlider={popularCategoies}
+                />
+
+                {/* {popularCategoies.map((popularCategory, keyPopularCategory) => (
                   <div key={keyPopularCategory} className="card-1">
                     <figure className=" img-hover-scale overflow-hidden">
                       <Link to={"/"}>
@@ -1037,11 +965,12 @@ const Home = () => {
                       <Link to={"/"}>{popularCategory.name}</Link>
                     </h5>
                   </div>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
         </section>
+
         <section className="deals section-padding">
           <div className="container">
             <div className="row">
@@ -1116,6 +1045,7 @@ const Home = () => {
             </div>
           </div>
         </section>
+
         <section className="pt-25 pb-15">
           <div className="container wow fadeIn animated">
             <h3 className="section-title mb-20">
@@ -1132,71 +1062,15 @@ const Home = () => {
                 className="carausel-6-columns carausel-arrow-center"
                 id="carausel-6-columns-2"
               >
-                {ProductByArrival.map((ProductByArrival, keyByArrival) => (
-                  <div
-                    key={keyByArrival}
-                    className="product-cart-wrap small hover-up"
-                  >
-                    <div className="product-img-action-wrap">
-                      <div className="product-img product-img-zoom">
-                        <ShowProductImageByArrival
-                          item={ProductByArrival}
-                          url="product"
-                        />
-                      </div>
-                      <div className="product-action-1">
-                        <a
-                          aria-label="Quick view"
-                          className="action-btn small hover-up"
-                          data-bs-toggle="modal"
-                          data-bs-target="#quickViewModal"
-                        >
-                          <i className="fi-rs-eye"></i>
-                        </a>
-                        <a
-                          aria-label="Add To Wishlist"
-                          className="action-btn small hover-up"
-                          href="shop-wishlist.html"
-                          tabIndex="0"
-                        >
-                          <i className="fi-rs-heart"></i>
-                        </a>
-                        <a
-                          aria-label="Compare"
-                          className="action-btn small hover-up"
-                          href="shop-compare.html"
-                          tabIndex="0"
-                        >
-                          <i className="fi-rs-shuffle"></i>
-                        </a>
-                      </div>
-                      <div className="product-badges product-badges-position product-badges-mrg">
-                        <span className="hot">Hot</span>
-                      </div>
-                    </div>
-                    <div className="product-content-wrap">
-                      <h2>
-                        <a href="shop-product-right.html">
-                          {ProductByArrival.name}
-                        </a>
-                      </h2>
-                      <div className="rating-result" title="90%">
-                        <span></span>
-                      </div>
-                      <div className="product-price">
-                        <span> Rs {ProductByArrival.price} </span>
-                        <span className="old-price">
-                          Rs {ProductByArrival.discount}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <ProductByArrivalCarousel
+                  ProductByArrivalSlider={ProductByArrival}
+                />
               </div>
             </div>
           </div>
         </section>
-        <section className="section-padding">
+        {/* Top Venders Will shown here */}
+        {/* <section className="section-padding">
           <div className="container pb-20">
             <h3 className="section-title mb-20 wow fadeIn animated">
               <span>Featured</span> Brands
@@ -1262,7 +1136,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         <section className="bg-grey-9 section-padding">
           <div className="container pt-15 pb-25">
             <div className="heading-tab d-flex">

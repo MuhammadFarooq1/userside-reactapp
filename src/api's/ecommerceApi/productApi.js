@@ -1,5 +1,17 @@
 import { API } from "../../config";
 import querystring from "query-string";
+
+// product by id
+export const readProductDetail = (productId) => {
+  return fetch(`${API}/product/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+
 export const getAllProducts = async () => {
   try {
     const response = await fetch(`${API}/getallproducts`, {
@@ -93,6 +105,17 @@ export const searchProductsLists = (params) => {
   const query = querystring.stringify(params);
   console.log("query", query);
   return fetch(`${API}/products/by/search?${query}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+
+// list of the related products
+export const listOfRelatedProduct = (productId) => {
+  return fetch(`${API}/relatedProducts/${productId}`, {
     method: "GET",
   })
     .then((response) => {

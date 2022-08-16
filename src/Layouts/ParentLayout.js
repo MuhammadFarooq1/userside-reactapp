@@ -21,6 +21,7 @@ import "../assets/css/main.css";
 //import "../assets/js/main.js";
 //import "../assets/js/shop";
 //jquery
+
 import "../assets/js/plugins/counterup";
 import "../assets/js/plugins/isotope";
 import "../assets/js/plugins/jquery-ui";

@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../Layouts/ParentLayout";
 import { Link } from "react-router-dom";
-import ImgProduct_1 from "../../assets/imgs/shop/product-1-1.jpg";
-import ImgProduct_2 from "../../assets/imgs/shop/product-2-1.jpg";
-import ImgProduct_3 from "../../assets/imgs/shop/product-3-1.jpg";
-import {
-  getTotalItemInwishList,
-  removeItemwishList,
-} from "../../hellper/wishListHellper";
-
+import { getTotalItemInwishList } from "../../hellper/wishListHellper";
+import WishListCard from "../core/wishListCard";
 const WishList = () => {
-  const [items, setItems] = useState([]);
-  const [run, setRun] = useState(false);
+  const [wishlistitems, setWishListItems] = useState([]);
+  const [runwishlist, setRunWishList] = useState(false);
   useEffect(() => {
-    setItems(getTotalItemInwishList());
-  }, [run]);
+    setWishListItems(getTotalItemInwishList());
+  }, [runwishlist]);
+  const ShowItems = () => {
+    return (
+      <div>
+        <h2>
+          Your wish List has <span> {`${wishlistitems.length}`} </span>{" "}
+          wishlistitems{" "}
+        </h2>
+      </div>
+    );
+  };
+
+  const noItemMessege = () => {
+    <h2>
+      Your wish List empty. <br /> <Link to="/shop">Continue shoping </Link>
+    </h2>;
+  };
 
   return (
     <Layout title="" discription="" className="">
@@ -29,6 +39,7 @@ const WishList = () => {
           </div>
         </div>
         <section className="mt-50 mb-50">
+          {wishlistitems ? ShowItems(wishlistitems) : noItemMessege()}
           <div className="container">
             <div className="row">
               <div className="col-12">
@@ -46,43 +57,16 @@ const WishList = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {items.map((products, productscartkey) => (
-                        <tr>
-                          <td className="image product-thumbnail">
-                            <img src={ImgProduct_1} alt="#" />
-                          </td>
-                          <td className="product-des product-name">
-                            <h5 className="product-name">
-                              <a href="shop-product-right.html">
-                                J.Crew Mercantile Women's Short-Sleeve
-                              </a>
-                            </h5>
-                            <p className="font-xs">
-                              Maboriosam in a tonto nesciung eget
-                              <br /> distingy magndapibus.
-                            </p>
-                          </td>
-                          <td className="price" data-title="Price">
-                            <span>$65.00 </span>
-                          </td>
-                          <td className="text-center" data-title="Stock">
-                            <span className="color3 font-weight-bold">
-                              In Stock
-                            </span>
-                          </td>
-                          <td className="text-right" data-title="Cart">
-                            <button className="btn btn-sm">
-                              <i className="fi-rs-shopping-bag mr-5"></i>Add to
-                              cart
-                            </button>
-                          </td>
-                          <td className="action" data-title="Remove">
-                            <a href="#">
-                              <i className="fi-rs-trash"></i>
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
+                      {wishlistitems.map(
+                        (productsWishList, productscartkey) => (
+                          <WishListCard
+                            key={productscartkey}
+                            wishlistproduct={productsWishList}
+                            setRunWishList={setRunWishList}
+                            runwishlist={runwishlist}
+                          />
+                        )
+                      )}
                     </tbody>
                   </table>
                 </div>
