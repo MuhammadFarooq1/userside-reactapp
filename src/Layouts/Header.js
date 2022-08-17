@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { countTotalAddItemInCart } from "../hellper/cartHellper";
 import { countTotalAddItemInWishList } from "../hellper/wishListHellper";
 import { logout, isAuthenticated } from "../api's/auth";
+import ProfileDropdown from "./DropDown";
+
 const Header = () => {
   let navigate = useNavigate();
   return (
@@ -1020,7 +1022,7 @@ const Header = () => {
                         {" "}
                         <Link to={"/contactus"}> Contact</Link>
                       </li>
-                      <li className="ml-100">
+                      {/* <li className="ml-100">
                         <a>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -1067,12 +1069,12 @@ const Header = () => {
                             </li>
                           )}
                         </ul>
-                      </li>
+                      </li> */}
                     </ul>
                   </nav>
                 </div>
               </div>
-
+              <ProfileDropdown />
               {/* <div className="hotline d-none d-lg-block">
                 {/* <p>
                   <i className="fi-rs-headset"></i>
