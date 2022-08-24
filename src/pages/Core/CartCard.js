@@ -9,6 +9,7 @@ import {
   updateItem,
 } from "../../hellper/cartHellper";
 import ShowCartImage from "../ecommerce/ShowCartImage.js";
+import CheckOut from "../ecommerce/CheckOut.js";
 const CartCard = ({
   product,
   setRun = (f) => f, // default value of function
@@ -29,54 +30,58 @@ const CartCard = ({
   };
 
   return (
-    <tr>
-      <td className="image product-thumbnail">
-        {/* <img src={ImgProduct_1_1} alt="#" /> */}
-        <ShowCartImage item={product} url="product" />
-      </td>
-      <td className="product-des product-name">
-        <h5 className="product-name">
-          <a href="shop-product-right.html">
-            {product.name} <br />
-            {product.subCategory.name}
-          </a>
-        </h5>
-        <p className="font-xs">{product.discription.substring(0, 100)} </p>
-      </td>
-      <td className="price" data-title="Price">
-        <span>Rs {product.price} </span>
-      </td>
-      <td className="text-center" data-title="Stock">
-        <div>
-          {/* <a href="#" className="qty-down">
+    <>
+      <tr>
+        <td className="image product-thumbnail">
+          {/* <img src={ImgProduct_1_1} alt="#" /> */}
+          <ShowCartImage item={product} url="product" />
+        </td>
+        <td className="product-des product-name">
+          <h5 className="product-name">
+            <a href="shop-product-right.html">
+              {product.name} <br />
+              {product.subCategory.name}
+            </a>
+          </h5>
+          <p className="font-xs">{product.discription.substring(0, 100)} </p>
+        </td>
+        <td className="price" data-title="Price">
+          <span>Rs {product.price} </span>
+        </td>
+        <td className="text-center" data-title="Stock">
+          <div>
+            {/* <a href="#" className="qty-down">
                                 <i className="fi-rs-angle-small-down"></i>
                               </a> */}
-          <input
-            type="number"
-            className="detail-qty border radius  m-auto"
-            value={count}
-            onChange={handleChange(product._id, product.price)}
-          />
-          {/* <a className="qty-up">
+            <input
+              type="number"
+              className="detail-qty border radius  m-auto"
+              value={count}
+              onChange={handleChange(product._id, product.price)}
+            />
+            {/* <a className="qty-up">
                                 <i className="fi-rs-angle-small-up"></i>
                               </a> */}
-        </div>
-      </td>
-      <td className="text-right" data-title="Cart">
-        <span> PKR {total} </span>
-      </td>
-      <td className="action" data-title="Remove">
-        <a className="text-muted">
-          <i
-            onClick={() => {
-              removeItem(product._id);
-              setRun(!run);
-            }}
-            className="fi-rs-trash"
-          ></i>
-        </a>
-      </td>
-    </tr>
+          </div>
+        </td>
+        <td className="text-right" data-title="Cart">
+          <span> PKR {total} </span>
+        </td>
+        <td className="action" data-title="Remove">
+          <a className="text-muted">
+            <i
+              onClick={() => {
+                removeItem(product._id);
+                setRun(!run);
+              }}
+              className="fi-rs-trash"
+            ></i>
+          </a>
+        </td>
+      </tr>
+
+      {/* <CheckOut amount={total} /> */}
+    </>
   );
 };
 export default CartCard;

@@ -4,16 +4,17 @@ import ImgProduct_1_1 from "../../assets/imgs/shop/product-1-2.jpg";
 import ImgProduct_1_2 from "../../assets/imgs/shop/product-11-2.jpg";
 import ImgProduct_1_3 from "../../assets/imgs/shop/product-6-1.jpg";
 import ShowCartImage from "./ShowCartImage";
-
+import StripeCheckout from "react-stripe-checkout";
 import { getTotalItemInCart } from "../../hellper/cartHellper";
 
 import { Link } from "react-router-dom";
 import CartCard from "../core/CartCard";
 import CheckOut from "./CheckOut";
-
+import ShopCheckOut from "./ShopCheckout";
 const Cart = () => {
   const [items, setItems] = useState([]);
   const [run, setRun] = useState(false);
+
   useEffect(() => {
     setItems(getTotalItemInCart());
   }, [run]);
@@ -104,16 +105,17 @@ const Cart = () => {
                 <a className="btn  mr-10 mb-sm-15">
                   <i className="fi-rs-shuffle mr-10"></i>Update Cart
                 </a>
-                <a className="btn ">
+                <Link to="/checkout" className="btn ">
                   <i className="fi-rs-shopping-bag mr-10"></i>Continue Shopping
-                </a>
+                </Link>
               </div>
               <div className="divider center_icon mt-50 mb-50">
                 <i className="fi-rs-fingerprint"></i>
               </div>
 
               {/* cart checkout . */}
-              <CheckOut checkOutProducts={items} />
+              {/* <CheckOut checkOutProducts={items} /> */}
+              <ShopCheckOut checkOutProducts={items} />
             </div>
           </div>
         </div>

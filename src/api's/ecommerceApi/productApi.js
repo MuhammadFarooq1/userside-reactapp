@@ -103,7 +103,7 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
 
 export const searchProductsLists = (params) => {
   const query = querystring.stringify(params);
-  console.log("query", query);
+  // console.log("query", query);
   return fetch(`${API}/products/by/search?${query}`, {
     method: "GET",
   })

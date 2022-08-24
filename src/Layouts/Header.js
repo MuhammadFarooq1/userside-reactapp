@@ -21,7 +21,7 @@ const Header = () => {
   return (
     <Fragment>
       <header className="header-area header-style-4 header-height-2">
-        <div className="header-top header-top-ptb-1 d-none d-lg-block">
+        {/* <div className="header-top header-top-ptb-1 d-none d-lg-block">
           <div className="container">
             <div className="row align-items-center">
               <div className="col-xl-3 col-lg-4">
@@ -91,14 +91,12 @@ const Header = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="header-middle header-middle-ptb-1 d-none d-lg-block">
           <div className="container">
             <div className="header-wrap">
               <div className="logo logo-width-1">
-                <Link to={"/"}>
-                  <img alt="logo" src={ImgLogo} />
-                </Link>
+                <Link to={"/"}>{/* <img alt="logo" src={ImgLogo} /> */}</Link>
               </div>
               <div className="header-right">
                 <div className="search-style-2">

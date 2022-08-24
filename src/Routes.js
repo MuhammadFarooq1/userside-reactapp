@@ -6,6 +6,7 @@ import Home from "../src/pages/core/Home";
 import Wishlist from "../src/pages/ecommerce/Wishlist";
 import Cart from "../src/pages/ecommerce/Cart";
 import CheckOut from "../src/pages/ecommerce/CheckOut";
+import ShopCheckOut from "../src/pages/ecommerce/ShopCheckout";
 import AboutUs from "../src/pages/social/AboutUs";
 import ContacUs from "../src/pages/social/ContactUs";
 import Account from "../src/pages/social/Account";
@@ -27,6 +28,7 @@ const MyRoutes = () => {
         <Route path="/shop" exact element={<Shop />} />
         <Route path="/cart" exact element={<Cart />} />
         <Route path="/checkout" exact element={<CheckOut />} />
+        <Route path="/shop/checkout" exact element={<ShopCheckOut />} />
         <Route path="/aboutus" exact element={<AboutUs />} />
         <Route
           path="/productdetail/:productId"

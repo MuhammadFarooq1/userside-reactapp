@@ -3,7 +3,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { PUBLISHABLEKEY } from "../../config";
 
-import "../../assets/css/checkout.css";
+//import "../../assets/css/checkout.css";
 import CheckoutForm from "./CheckoutForm";
 import { creatSession } from "../../api's/ecommerceApi/checkoutApi";
 import { isAuthenticated } from "../../api's/auth";
@@ -17,9 +17,16 @@ const stripePromise = loadStripe(
   "pk_test_51LWQItJfVhzhvN34ECE0MgDKmthCiskOMGHhlWYw68csL5zEN7mKZwC4s7vSAxLuILAhwZGfTsg4MS5XXdwjgSyO00YN5xnhzS"
 );
 
-const CheckOut = () => {
+const CheckOut = ({ checkOutProducts }) => {
   const [clientSecret, setClientSecret] = useState("");
 
+  const getTotal = () => {
+    return checkOutProducts.reduce((currentValue, nextValue) => {
+      return currentValue + nextValue.count * nextValue.price;
+    }, 0);
+  };
+  const total = getTotal();
+  //console.log(total);
   const userId = isAuthenticated() && isAuthenticated().user._id;
   const token = isAuthenticated() && isAuthenticated().token;
   const [error, setError] = useState(false);
@@ -50,9 +57,9 @@ const CheckOut = () => {
     appearance,
   };
   return (
-    <div className="App payment_App">
+    <div className="App">
       <div>{showError()}</div>
-
+      <div>{total}</div>
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />
