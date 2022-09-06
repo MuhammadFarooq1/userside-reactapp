@@ -805,9 +805,9 @@ const Header = () => {
                     <ul>
                       <li>
                         <Link className="active" to={"/"}>
-                          Home<i className="fi-rs-angle-down"></i>
+                          Home<i></i>
                         </Link>{" "}
-                        <ul className="sub-menu">
+                        {/* <ul className="sub-menu">
                           <li>
                             <Link to={"/"}>Home 1</Link>{" "}
                           </li>
@@ -820,7 +820,7 @@ const Header = () => {
                           <li>
                             <Link to={"/"}>Home 4</Link>{" "}
                           </li>
-                        </ul>
+                        </ul> */}
                       </li>
                       <li>
                         <Link to={"/aboutus"}>About</Link>{" "}

@@ -115,7 +115,11 @@ const Cart = () => {
 
               {/* cart checkout . */}
               {/* <CheckOut checkOutProducts={items} /> */}
-              <ShopCheckOut checkOutProducts={items} />
+              <ShopCheckOut
+                checkOutProducts={items}
+                setRun={setRun}
+                run={run}
+              />
             </div>
           </div>
         </div>

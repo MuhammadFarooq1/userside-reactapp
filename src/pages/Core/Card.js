@@ -57,9 +57,9 @@ const Card = ({ product }) => {
             <i className="fi-rs-shuffle"></i>
           </Link>
         </div>
-        <div className="product-badges product-badges-position product-badges-mrg">
+        {/* <div className="product-badges product-badges-position product-badges-mrg">
           <span className="hot">Hot</span>
-        </div>
+        </div> */}
       </div>
       <div className="product-content-wrap">
         <div className="product-category">

@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import React from "react";
 import { Link } from "react-router-dom";
 import ShowProductImageByArrival from "../core/ShowProductImageByArrival";
+import Card from "../core/Card";
 
 const ProductByArrivalCarousel = ({ ProductByArrivalSlider }) => {
   const settings = {
@@ -24,13 +25,15 @@ const ProductByArrivalCarousel = ({ ProductByArrivalSlider }) => {
             key={keyProductByArrival}
             className="product-cart-wrap small hover-up"
           >
-            <div className="product-img-action-wrap">
+            <Card product={ProductByArrival} />
+            {/* <div className="product-img-action-wrap">
               <div className="product-img product-img-zoom">
                 <ShowProductImageByArrival
                   item={ProductByArrival}
                   url="product"
                 />
               </div>
+
               <div className="product-action-1">
                 <a
                   aria-label="Quick view"
@@ -58,8 +61,8 @@ const ProductByArrivalCarousel = ({ ProductByArrivalSlider }) => {
               <div className="product-badges product-badges-position product-badges-mrg">
                 <span className="hot">Hot</span>
               </div>
-            </div>
-            <div className="product-content-wrap">
+            </div> */}
+            {/* <div className="product-content-wrap">
               <h2>
                 <a>{ProductByArrival.name}</a>
               </h2>
@@ -72,7 +75,7 @@ const ProductByArrivalCarousel = ({ ProductByArrivalSlider }) => {
                   Rs {ProductByArrival.discount}
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         ))}
       </Slider>

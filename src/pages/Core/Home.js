@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import {
   getAllProducts,
+  getProductshome,
   getProductsBySellByArrival,
   getPopularCategories,
 } from "../../api's/ecommerceApi/productApi.js";
@@ -40,6 +41,11 @@ import ImgBrandBanner_3 from "../../assets/imgs/banner/brand-3.png";
 import ImgBrandBanner_9 from "../../assets/imgs/banner/banner-9.jpg";
 import ImgBrandBanner_10 from "../../assets/imgs/banner/banner-10.jpg";
 import ImgBrandBanner_8Motherday from "../../assets/imgs/banner/banner-8.jpg";
+import ImgBrandBanner_24_7 from "../../assets/imgs/theme/icons/feature-6.png";
+import ImgBrandBanner_happy_sell from "../../assets/imgs/theme/icons/feature-5.png";
+import ImgBrandBanner_permotion from "../../assets/imgs/theme/icons/feature-4.png";
+import ImgBrandBanner_save_money from "../../assets/imgs/theme/icons/feature-3.png";
+import ImgBrandBanner_onlin_order from "../../assets/imgs/theme/icons/feature-2.png";
 
 import ShowImage from "./ShowProductImage.js";
 import ShowCategoryImage from "./ShowCategoryImage.js";
@@ -62,7 +68,7 @@ const Home = () => {
   const [error, setError] = useState(false);
 
   const getProducts = () => {
-    getAllProducts().then((data) => {
+    getProductshome().then((data) => {
       if (data.error) {
         setError(data.error);
       } else {
@@ -726,7 +732,7 @@ const Home = () => {
                         aria-controls="tab-one"
                         aria-selected="true"
                       >
-                        Featured
+                        Home
                       </button>
                     </li>
                     <li className="nav-item" role="presentation">
@@ -1735,31 +1741,31 @@ const Home = () => {
               </div>
               <div className="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                 <div className="banner-features wow fadeIn animated hover-up">
-                  <img src="assets/imgs/theme/icons/feature-2.png" alt="" />
+                  <img src={ImgBrandBanner_onlin_order} alt="" />
                   <h4 className="bg-3">Online Order</h4>
                 </div>
               </div>
               <div className="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                 <div className="banner-features wow fadeIn animated hover-up">
-                  <img src="assets/imgs/theme/icons/feature-3.png" alt="" />
+                  <img src={ImgBrandBanner_save_money} alt="" />
                   <h4 className="bg-2">Save Money</h4>
                 </div>
               </div>
               <div className="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                 <div className="banner-features wow fadeIn animated hover-up">
-                  <img src="assets/imgs/theme/icons/feature-4.png" alt="" />
+                  <img src={ImgBrandBanner_permotion} alt="" />
                   <h4 className="bg-4">Promotions</h4>
                 </div>
               </div>
               <div className="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                 <div className="banner-features wow fadeIn animated hover-up">
-                  <img src="assets/imgs/theme/icons/feature-5.png" alt="" />
+                  <img src={ImgBrandBanner_happy_sell} alt="" />
                   <h4 className="bg-5">Happy Sell</h4>
                 </div>
               </div>
               <div className="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                 <div className="banner-features wow fadeIn animated hover-up">
-                  <img src="assets/imgs/theme/icons/feature-6.png" alt="" />
+                  <img src={ImgBrandBanner_24_7} alt="" />
                   <h4 className="bg-6">24/7 Support</h4>
                 </div>
               </div>

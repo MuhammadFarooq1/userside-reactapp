@@ -9,6 +9,7 @@ import {
 import CheckBox from "./CheckBox";
 import { Prices } from "./fixedPrices";
 import RadioBox from "./RadioBox";
+import Card from "./Card";
 
 const Shop = () => {
   const [myFilters, setMyFilters] = useState({
@@ -131,7 +132,8 @@ const Shop = () => {
                     key={keyfilterProduct}
                     className="col-lg-4 col-md-4 col-12 col-sm-6"
                   >
-                    <div className="product-cart-wrap mb-30">
+                    <Card product={filtterProducts} />
+                    {/* <div className="product-cart-wrap mb-30">
                       <div className="product-img-action-wrap">
                         <ShowImage item={filtterProducts} url="product" />
 
@@ -195,7 +197,7 @@ const Shop = () => {
                           </a>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </div>

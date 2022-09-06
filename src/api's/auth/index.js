@@ -67,3 +67,62 @@ export const logout = (next) => {
       .catch((error) => console.log("error", error));
   }
 };
+
+export const readProfile = async (userId, token) => {
+  try {
+    const response = await fetch(`${API}/user/readProfile/${userId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+export const updateUserProfile = (userId, token, user) => {
+  return fetch(`${API}/user/profile/update/${userId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+
+export const updateUserInLocalStorage = (user, next) => {
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("authToken")) {
+      let auth = JSON.parse(localStorage.getItem("authToken"));
+      auth.user = user;
+      localStorage.setItem("authToken", JSON.stringify(auth));
+      next();
+    }
+  }
+};
+
+export const userPurchaseHistory = async (userId, token) => {
+  try {
+    const response = await fetch(`${API}/user/puchase-history/${userId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    return console.log(error);
+  }
+};

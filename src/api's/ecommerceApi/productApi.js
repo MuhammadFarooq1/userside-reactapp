@@ -23,6 +23,16 @@ export const getAllProducts = async () => {
   }
 };
 
+export const getProductshome = async () => {
+  try {
+    const response = await fetch(`${API}/home/productlists`, {
+      method: "GET",
+    });
+    return await response.json();
+  } catch (error) {
+    return console.log(error);
+  }
+};
 export const getProductsBySellByArrival = (sortBy) => {
   return fetch(
     `${API}/productbyarrivalBysell?sortBy=${sortBy}&order=desc&limit=6`,

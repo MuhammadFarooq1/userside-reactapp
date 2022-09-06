@@ -14,6 +14,7 @@ import FourOfour from "../src/pages/Authentication/Four_O_Four";
 import Shop from "./pages/core/Shop";
 import ProductDetaile from "./pages/core/ProductDetail";
 import UserDashboard from "./pages/users/UserDashboard";
+import UserProfile from "./pages/users/UserProfile";
 
 const MyRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const MyRoutes = () => {
         <Route path="/signin" exact element={<SignIn />} />
         <Route path="/signup" exact element={<SignUp />} />
         <Route path="/user/dashboard" exact element={<UserDashboard />} />
+        <Route path="/user/profile/:userId" exact element={<UserProfile />} />
         <Route path="/wishlist" exact element={<Wishlist />} />
         <Route path="/shop" exact element={<Shop />} />
         <Route path="/cart" exact element={<Cart />} />

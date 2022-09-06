@@ -49,10 +49,10 @@ const ProductDetaile = () => {
               <div className="product-detail accordion-detail">
                 <div className="row mb-50">
                   <div className="col-md-6 col-sm-12 col-xs-12">
-                    <div className="detail-gallery">
-                      <span className="zoom-icon">
+                     <div className="detail-gallery">
+                      {/* <span className="zoom-icon">
                         <i className="fi-rs-search"></i>
-                      </span>
+                      </span> */}
                       {/* <!-- MAIN SLIDES --> */}
                       <div className="product-image-slider">
                         <figure className="border-radius-10">
@@ -61,7 +61,7 @@ const ProductDetaile = () => {
                             url="product"
                           />
                         </figure>
-                        <figure className="border-radius-10">
+                        {/* <figure className="border-radius-10">
                           <img
                             src="assets/imgs/shop/product-16-1.jpg"
                             alt="product image"
@@ -96,10 +96,10 @@ const ProductDetaile = () => {
                             src="assets/imgs/shop/product-16-7.jpg"
                             alt="product image"
                           />
-                        </figure>
+                        </figure> */}
                       </div>
                       {/* <!-- THUMBNAILS --> */}
-                      <div className="slider-nav-thumbnails pl-15 pr-15">
+                      {/* <div className="slider-nav-thumbnails pl-15 pr-15">
                         <div>
                           <img
                             src="assets/imgs/shop/thumbnail-3.jpg"
@@ -142,7 +142,7 @@ const ProductDetaile = () => {
                             alt="product image"
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {/* <!-- End Gallery --> */}
                   </div>
@@ -184,9 +184,9 @@ const ProductDetaile = () => {
                               RS {product.discount}
                             </span>
                           </ins>
-                          <span className="save-price  font-md color3 ml-15">
+                          {/* <span className="save-price  font-md color3 ml-15">
                             25% Off
-                          </span>
+                          </span> */}
                         </div>
                       </div>
                       <div className="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -209,7 +209,7 @@ const ProductDetaile = () => {
                           </li>
                         </ul>
                       </div>
-                      <div className="attr-detail attr-color mb-15">
+                      {/* <div className="attr-detail attr-color mb-15">
                         <strong className="mr-10">Color</strong>
                         <ul className="list-filter color-filter">
                           <li>
@@ -268,10 +268,10 @@ const ProductDetaile = () => {
                             <a href="#">XXL</a>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                       <div className="bt-1 border-color-1 mt-30 mb-30"></div>
                       <div className="detail-extralink">
-                        <div className="detail-qty border radius">
+                        {/* <div className="detail-qty border radius">
                           <a href="#" className="qty-down">
                             <i className="fi-rs-angle-small-down"></i>
                           </a>
@@ -279,7 +279,7 @@ const ProductDetaile = () => {
                           <a href="#" className="qty-up">
                             <i className="fi-rs-angle-small-up"></i>
                           </a>
-                        </div>
+                        </div> */}
                         <div className="product-extra-link2">
                           <button
                             type="submit"
@@ -324,7 +324,7 @@ const ProductDetaile = () => {
                         <li>
                           Availability:
                           <span className="in-stock text-success ml-5">
-                            8 Items In Stock
+                            {product.quantity} Items In Stock
                           </span>
                         </li>
                       </ul>
@@ -336,7 +336,8 @@ const ProductDetaile = () => {
                   <div className="col-lg-10 m-auto entry-main-content">
                     <h2 className="section-title style-1 mb-30">Description</h2>
                     <div className="description mb-50">
-                      <p>
+                      <p>{product.about}</p>
+                      {/* <p>
                         Uninhibited carnally hired played in whimpered dear
                         gorilla koala depending and much yikes off far quetzal
                         goodness and from for grimaced goodness unaccountably
@@ -368,9 +369,9 @@ const ProductDetaile = () => {
                         <li>
                           <span>Piece In One</span> Carton
                         </li>
-                      </ul>
+                      </ul> */}
                       <hr className="wp-block-separator is-style-dots" />
-                      <p>
+                      {/* <p>
                         Laconic overheard dear woodchuck wow this outrageously
                         taut beaver hey hello far meadowlark imitatively
                         egregiously hugged that yikes minimally unanimous pouted
@@ -379,7 +380,7 @@ const ProductDetaile = () => {
                         raucously that magic upheld far so the this where crud
                         then below after jeez enchanting drunkenly more much wow
                         callously irrespective limpet.
-                      </p>
+                      </p> */}
                       <h4 className="mt-30">Packaging & Delivery</h4>
                       <hr className="wp-block-separator is-style-wide" />
                       <p>
@@ -402,7 +403,7 @@ const ProductDetaile = () => {
                         lugubrious luridly irrationally attractively dachshund.
                       </p>
                     </div>
-                    <h3 className="section-title style-1 mb-30">
+                    {/* <h3 className="section-title style-1 mb-30">
                       Additional info
                     </h3>
                     <table className="font-md mb-30">
@@ -532,7 +533,7 @@ const ProductDetaile = () => {
                           </a>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                     <h3 className="section-title style-1 mb-30 mt-30">
                       Reviews (3)
                     </h3>
