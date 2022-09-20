@@ -1,6 +1,26 @@
 import { API } from "../../config";
 import querystring from "query-string";
 
+// create review
+
+export const createProductReview = async (productID, userID, token, review) => {
+  try {
+    const response = await fetch(
+      `${API}/reviews/create/${productID}/user/${userID}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: review,
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    return error;
+  }
+};
 // product by id
 export const readProductDetail = (productId) => {
   return fetch(`${API}/product/${productId}`, {

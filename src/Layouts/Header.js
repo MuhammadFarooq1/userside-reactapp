@@ -96,11 +96,13 @@ const Header = () => {
           <div className="container">
             <div className="header-wrap">
               <div className="logo logo-width-1">
-                <Link to={"/"}>{/* <img alt="logo" src={ImgLogo} /> */}</Link>
+                <Link to={"/"}>
+                  <img alt="Liken store" src={ImgLogo} />
+                </Link>
               </div>
               <div className="header-right">
                 <div className="search-style-2">
-                  <form action="#">
+                  {/* <form action="#">
                     <select className="select-active">
                       <option>All Categories</option>
                       <option>Women's</option>
@@ -115,10 +117,29 @@ const Header = () => {
                       <option>Mother & Kids</option>
                     </select>
                     <input type="text" placeholder="Search for items..." />
-                  </form>
+                  </form> */}
                 </div>
                 <div className="header-action-right">
                   <div className="header-action-2">
+                    <div className="header-action-icon-2">
+                      <Link to={"/user/search"}>
+                        {/* <img
+                          className="svgInject"
+                          alt="Evara"
+                          src={ImgIconHeart}
+                        /> */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-search"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                      </Link>
+                    </div>
                     <div className="header-action-icon-2">
                       <Link to={"/wishlist"}>
                         <img
@@ -138,7 +159,7 @@ const Header = () => {
                           {countTotalAddItemInCart()}
                         </span>
                       </Link>
-                      <div className="cart-dropdown-wrap cart-dropdown-hm2">
+                      {/* <div className="cart-dropdown-wrap cart-dropdown-hm2">
                         <ul>
                           <li>
                             <div className="shopping-cart-img">
@@ -176,8 +197,17 @@ const Header = () => {
                             </Link>{" "}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
+                    <div className="header-action-icon-2">
+                      <Link className="mini-cart-icon" to={"/bidd/cart"}>
+                        <img alt="Evara" src={ImgIconCart} />
+                        <span className="pro-count blue">
+                          {countTotalAddItemInCart()}
+                        </span>
+                      </Link>
+                    </div>
+                    <ProfileDropdown />
                   </div>
                 </div>
               </div>
@@ -194,10 +224,10 @@ const Header = () => {
               </div>
               <div className="header-nav d-none d-lg-flex">
                 <div className="main-categori-wrap d-none d-lg-block">
-                  <a className="categori-button-active" href="#">
-                    <span className="fi-rs-apps"></span> Browse Categories
+                  <a className="categori-button-active" href="#shopcat">
+                    <span className="fi-rs-apps"></span> Browse Shop
                   </a>
-                  <div className="categori-dropdown-wrap categori-dropdown-active-large">
+                  {/* <div className="categori-dropdown-wrap categori-dropdown-active-large">
                     <ul>
                       <li className="has-children">
                         <a href="shop-grid-right.html">
@@ -798,7 +828,7 @@ const Header = () => {
                       </li>
                     </ul>
                     <div className="more_categories">Show more...</div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                   <nav>
@@ -1072,7 +1102,7 @@ const Header = () => {
                   </nav>
                 </div>
               </div>
-              <ProfileDropdown />
+              {/* <ProfileDropdown /> */}
               {/* <div className="hotline d-none d-lg-block">
                 {/* <p>
                   <i className="fi-rs-headset"></i>

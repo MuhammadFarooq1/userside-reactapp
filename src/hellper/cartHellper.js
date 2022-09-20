@@ -17,7 +17,7 @@ export function AddItemCart(item, next) {
     next();
   }
 }
-
+// add bid item to cart 
 // count the total item in the cart
 export const countTotalAddItemInCart = () => {
   if (typeof window !== "undefined") {

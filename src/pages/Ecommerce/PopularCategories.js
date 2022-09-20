@@ -20,7 +20,7 @@ const PopularCategoriesCarousel = ({ PopularCategoriesSlider }) => {
     <>
       <Slider {...settings}>
         {PopularCategoriesSlider.map((popularCategory, keyPopularCategory) => (
-          <div key={keyPopularCategory} className="card-1">
+          <div key={keyPopularCategory} className="card-1   ">
             <ShowCategoryImage item={popularCategory} url="category" />
             <h5>
               <Link to={"/"}>{popularCategory.name}</Link>

@@ -24,7 +24,6 @@ const UserProfile = () => {
 
   const { username, email, password, error, success } = values;
   const init = (userId) => {
-    console.log("djks", userId);
     readProfile(userId, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: true });

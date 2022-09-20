@@ -1,20 +1,83 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../Layouts/ParentLayout";
-
-import { Link } from "react-router-dom";
+import Rating from "./Rating";
+import { AddItemCart } from "../../hellper/cartHellper.js";
+import { AddItemwishList } from "../../hellper/wishListHellper";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  CardHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
+  Input,
+  Label,
+} from "reactstrap";
+import { isAuthenticated } from "../../api's/auth";
+import {
+  creatBidProduct,
+  fetchUserBiddingProduct,
+  UpdateUserBidd,
+} from "../../api's/bidding/bidApi.js";
 import {
   readProductDetail,
   listOfRelatedProduct,
+  createProductReview,
 } from "../../api's/ecommerceApi/productApi";
 import { useParams } from "react-router-dom";
-import Card from "./Card";
+import myCard from "./Card";
 import ShowSingalProductImage from "./ShowSingalProduct";
 const ProductDetaile = () => {
   const pid = useParams();
+  const Navigate = useNavigate();
+  const [redirect, setRedirect] = useState(0);
+  const [prating, setRating] = useState(0);
+  const [pcomment, setComment] = useState("");
   const [product, setProduct] = useState({});
   const [error, setError] = useState(false);
   const [relatedProduct, setRelatedProducts] = useState([]);
+  const { user } = isAuthenticated();
+  const userId = isAuthenticated() && isAuthenticated().user._id;
+  const token = isAuthenticated() && isAuthenticated().token;
+  // const [userBiddingProduct, setUserBiddingProduct] = useState("");
+  // const [biddingAmount, setBiddingAmount] = useState("");
+  // const [biddingdiscription, setDiscription] = useState("");
 
+  const [values, setValues] = useState({
+    rating: "",
+    comment: "",
+    loading: false,
+    reviewerror: "",
+    formData: "",
+    createdReview: "",
+  });
+  const [bidValues, setBidValues] = useState({
+    userBiddingProduct: "",
+    biddingAmount: "",
+    discription: "",
+    bidLoading: false,
+    bidError: "",
+    updatedBidData: "",
+  });
+  const { rating, comment, createdReview, loading, reviewerror, formData } =
+    values;
+  const {
+    userBiddingProduct,
+    biddingAmount,
+    discription,
+    bidError,
+    bidLoading,
+    updatedBidData,
+  } = bidValues;
+  const init = () => {
+    setValues({ ...values, formData: new FormData() });
+  };
   const loadSingleProduct = (productId) => {
     //    console.log(productId);
     readProductDetail(productId).then((data) => {
@@ -33,23 +96,158 @@ const ProductDetaile = () => {
       }
     });
   };
+  const initUserbids = (productId, userId, token) => {
+    fetchUserBiddingProduct(productId, userId, token).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        // setUserBiddingProduct(data);
+        setBidValues({
+          ...bidValues,
+          userBiddingProduct: data,
+          biddingAmount: data.biddingAmount,
+          discription: data.discription,
+        });
+        // setBiddingAmount(data.biddingAmount);
+        // setDiscription(data.discription);
+      }
+    });
+  };
 
   useEffect(() => {
     const productId = pid.productId;
+    init();
+    initUserbids(productId, userId, token);
     loadSingleProduct(productId);
   }, []);
+  // hadle field change
+  const handleChange = (name) => (event) => {
+    const value = event.target.value;
+    formData.append(name, value);
+    setValues({ ...values, [name]: value });
+  };
+
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, reviewerror: "", loading: true });
+    createProductReview(pid.productId, user._id, token, formData).then(
+      (data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues({
+            ...values,
+            rating: "",
+            comment: "",
+            loading: false,
+            reviewerror: "",
+            createdReview: data.name,
+          });
+        }
+      }
+    );
+  };
+  const handleBidChange = (name) => (e) => {
+    setBidValues({ ...bidValues, bidError: false, [name]: e.target.value });
+  };
+  const clickUpdateSubmit = (e) => {
+    e.preventDefault();
+    UpdateUserBidd(userId, userBiddingProduct._id, token, {
+      biddingAmount,
+      discription,
+    }).then((data) => {
+      if (data.error) {
+        setBidValues({ ...values, bidError: true });
+      } else {
+        setValues({
+          ...values,
+          biddingAmount: data.biddingAmount,
+          discription: data.discription,
+          updatedBidData: true,
+        });
+      }
+    });
+  };
+  const showError = () => (
+    <h2 className="alert alert-danger" style={{ display: error ? "" : "none" }}>
+      {error}
+    </h2>
+  );
+  const showbidError = () => (
+    <h2
+      className="alert alert-danger"
+      style={{ display: bidError ? "" : "none" }}
+    >
+      {bidError}
+    </h2>
+  );
+  const AddToCart = () => {
+    AddItemCart(product, () => {
+      setRedirect(1);
+    });
+  };
+  const AddToWishList = () => {
+    AddItemwishList(product, () => {
+      setRedirect(2);
+    });
+  };
+  const redirectUser = (redirect) => {
+    if (redirect === 1) {
+      Navigate("/cart");
+    }
+    if (redirect === 2) {
+      Navigate("/wishlist");
+    }
+    if (redirect === 3) {
+      Navigate("/wishlist");
+    }
+  };
+  // const updatePlacingBidd = () => {
+  //   const updatedBidData = {
+  //     biddingAmount: biddingAmount,
+  //     discription: biddingdiscription,
+  //   };
+  //   UpdateUserBidd(userId, userBiddingProduct._id, token, updatedBidData).then(
+  //     (response) => {
+  //       if (response.error) {
+  //         setError(response.error);
+  //         //console.log("bid eror", response.error);
+  //       } else {
+  //         setUserBiddingProduct(response);
+  //       }
+  //     }
+  //   );
+  // };
+  const placingBidd = () => {
+    const creatBidData = {
+      product: pid.productId,
+      seller: product.userID,
+      biddingAmount: biddingAmount,
+      discription: discription,
+    };
+    creatBidProduct(userId, token, creatBidData).then((response) => {
+      if (response.error) {
+        // setError(data.error);
+        console.log("bid eror", response.error);
+      } else {
+        setRedirect(3);
+      }
+    });
+  };
   return (
     <Layout title="" discription="" className="">
       {/* <div> {JSON.stringify(product)} </div> */}
 
       <section className="mt-50 mb-50">
+        {redirectUser(redirect)}
+        {showError()}
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="product-detail accordion-detail">
                 <div className="row mb-50">
                   <div className="col-md-6 col-sm-12 col-xs-12">
-                     <div className="detail-gallery">
+                    <div className="detail-gallery">
                       {/* <span className="zoom-icon">
                         <i className="fi-rs-search"></i>
                       </span> */}
@@ -61,89 +259,168 @@ const ProductDetaile = () => {
                             url="product"
                           />
                         </figure>
-                        {/* <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-1.jpg"
-                            alt="product image"
-                          />
-                        </figure>
-                        <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-3.jpg"
-                            alt="product image"
-                          />
-                        </figure>
-                        <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-4.jpg"
-                            alt="product image"
-                          />
-                        </figure>
-                        <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-5.jpg"
-                            alt="product image"
-                          />
-                        </figure>
-                        <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-6.jpg"
-                            alt="product image"
-                          />
-                        </figure>
-                        <figure className="border-radius-10">
-                          <img
-                            src="assets/imgs/shop/product-16-7.jpg"
-                            alt="product image"
-                          />
-                        </figure> */}
                       </div>
-                      {/* <!-- THUMBNAILS --> */}
-                      {/* <div className="slider-nav-thumbnails pl-15 pr-15">
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-3.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-4.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-5.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-6.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-7.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-8.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                        <div>
-                          <img
-                            src="assets/imgs/shop/thumbnail-9.jpg"
-                            alt="product image"
-                          />
-                        </div>
-                      </div> */}
                     </div>
+                    {product && product.bidStatus === 1 ? (
+                      <>
+                        <Card className="mt-5">
+                          <CardHeader>
+                            <h5 className="card-title mb-0">Bidding Detail</h5>
+                          </CardHeader>
+                          <CardBody>
+                            <Row>
+                              <Col lg={6}>
+                                <div className="pro-details-brand">
+                                  <span>
+                                    minPrice:
+                                    <a> {product.minPrice}</a>
+                                  </span>
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="pro-details-brand">
+                                  <span>
+                                    maxPrice:
+                                    <a> {product.maxPrice}</a>
+                                  </span>
+                                </div>
+                              </Col>
+                              <Label
+                                className="form-label mt-10"
+                                htmlFor="product-weight-input"
+                              >
+                                Description
+                              </Label>
+                              <div className="short-desc mb-30">
+                                <p className="font-sm">{product.discription}</p>
+                              </div>
+                            </Row>
+                          </CardBody>
+                        </Card>
+                        {userBiddingProduct &&
+                        userBiddingProduct.product.bidStatus === 1 ? (
+                          <Card className="mt-5">
+                            <CardHeader>
+                              {showbidError()}
+                              <h5 className="card-title mb-0">Update Bid</h5>
+                            </CardHeader>
+                            <CardBody>
+                              <form className=" container mb-10  ">
+                                <Row>
+                                  <Col sm={12}>
+                                    <div className="mb-3">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="product-price-input"
+                                      >
+                                        Price
+                                      </label>
+                                      <div className="input-group mb-3">
+                                        <span className="input-group-text">
+                                          PKR
+                                        </span>
+                                        <input
+                                          min={product.minPrice}
+                                          max={product.maxPrice}
+                                          type="Number"
+                                          className="form-control"
+                                          onChange={handleBidChange(
+                                            "biddingAmount"
+                                          )}
+                                          value={biddingAmount}
+                                        />
+                                      </div>
+                                    </div>
+                                  </Col>
+                                  <div>
+                                    <Label
+                                      className="form-label"
+                                      htmlFor="bid-description-input"
+                                    >
+                                      Bid Description
+                                    </Label>
+                                    <textarea
+                                      className="form-control"
+                                      onChange={handleBidChange("discription")}
+                                      value={discription}
+                                      rows="3"
+                                    ></textarea>
+                                  </div>
+                                  <div className="text-end  mt-5">
+                                    <button
+                                      onClick={clickUpdateSubmit}
+                                      className="btn btn-success w-sm"
+                                    >
+                                      Submit
+                                    </button>
+                                  </div>
+                                </Row>
+                              </form>
+                            </CardBody>
+                          </Card>
+                        ) : (
+                          <Card className="mt-5">
+                            <CardHeader>
+                              <h5 className="card-title mb-0">Place a Bid</h5>
+                            </CardHeader>
+                            <CardBody>
+                              <Row>
+                                <Col sm={12}>
+                                  <div className="mb-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="product-price-input"
+                                    >
+                                      Price
+                                    </label>
+                                    <div className="input-group mb-3">
+                                      <span className="input-group-text">
+                                        PKR
+                                      </span>
+                                      <input
+                                        type="text"
+                                        className="form-control"
+                                        onChange={handleBidChange(
+                                          "biddingAmount"
+                                        )}
+                                        value={biddingAmount}
+                                        placeholder="Enter price"
+                                      />
+                                    </div>
+                                  </div>
+                                </Col>
+                                <div>
+                                  <Label
+                                    className="form-label"
+                                    htmlFor="bid-description-input"
+                                  >
+                                    Bid Description
+                                  </Label>
+                                  <textarea
+                                    className="form-control"
+                                    id="bid-description-input"
+                                    onChange={handleBidChange("discription")}
+                                    value={discription}
+                                    placeholder="Enter bid description"
+                                    rows="3"
+                                  ></textarea>
+                                </div>
+                                <div className="text-end  mt-5">
+                                  <button
+                                    onClick={placingBidd}
+                                    className="btn btn-success w-sm"
+                                  >
+                                    Submit
+                                  </button>
+                                </div>
+                              </Row>
+                            </CardBody>
+                          </Card>
+                        )}
+                      </>
+                    ) : (
+                      ""
+                    )}
                     {/* <!-- End Gallery --> */}
                   </div>
                   <div className="col-md-6 col-sm-12 col-xs-12">
@@ -282,24 +559,21 @@ const ProductDetaile = () => {
                         </div> */}
                         <div className="product-extra-link2">
                           <button
+                            onClick={AddToCart}
                             type="submit"
                             className="button button-add-to-cart"
                           >
                             Add to cart
                           </button>
                           <a
+                            onClick={AddToWishList}
                             aria-label="Add To Wishlist"
                             className="action-btn hover-up"
-                            href="shop-wishlist.html"
                           >
-                            <i className="fi-rs-heart"></i>
-                          </a>
-                          <a
-                            aria-label="Compare"
-                            className="action-btn hover-up"
-                            href="shop-compare.html"
-                          >
-                            <i className="fi-rs-shuffle"></i>
+                            <i
+                              onClick={AddToWishList}
+                              className="fi-rs-heart"
+                            ></i>
                           </a>
                         </div>
                       </div>
@@ -535,7 +809,11 @@ const ProductDetaile = () => {
                       </ul>
                     </div> */}
                     <h3 className="section-title style-1 mb-30 mt-30">
-                      Reviews (3)
+                      Reviews (3){" "}
+                      <Rating
+                        value={product.rating}
+                        text={`${product.numReviews} reviews`}
+                      />
                     </h3>
                     {/* <!--Comments--> */}
                     <div className="comments-area style-2">
@@ -756,15 +1034,32 @@ const ProductDetaile = () => {
                       <div className="row">
                         <div className="col-lg-8 col-md-12">
                           <form
+                            onSubmit={clickSubmit}
                             className="form-contact comment_form"
-                            action="#"
                             id="commentForm"
                           >
                             <div className="row">
+                              <div className="col-sm-6">
+                                <div className="form-group">
+                                  <label htmlFor="rating">Rating</label>
+                                  <select
+                                    onChange={handleChange("rating")}
+                                    name={rating}
+                                  >
+                                    <option value="">Select</option>
+                                    <option value="1">1- Bad</option>
+                                    <option value="2">2- Fair</option>
+                                    <option value="3">3- Good</option>
+                                    <option value="4">4- Very good</option>
+                                    <option value="5">5- Excelent</option>
+                                  </select>
+                                </div>
+                              </div>
                               <div className="col-12">
                                 <div className="form-group">
                                   <textarea
                                     className="form-control w-100"
+                                    onChange={handleChange("comment")}
                                     name="comment"
                                     id="comment"
                                     cols="30"
@@ -773,7 +1068,8 @@ const ProductDetaile = () => {
                                   ></textarea>
                                 </div>
                               </div>
-                              <div className="col-sm-6">
+
+                              {/* <div className="col-sm-6">
                                 <div className="form-group">
                                   <input
                                     className="form-control"
@@ -805,13 +1101,10 @@ const ProductDetaile = () => {
                                     placeholder="Website"
                                   />
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                             <div className="form-group">
-                              <button
-                                type="submit"
-                                className="button button-contactForm"
-                              >
+                              <button className="button button-contactForm">
                                 Submit Review
                               </button>
                             </div>
@@ -835,7 +1128,7 @@ const ProductDetaile = () => {
                             key={keyrelatedProducts}
                             className="col-lg-3 col-md-4 col-12 col-sm-6"
                           >
-                            <Card product={relatedProducts} />
+                            <myCard product={relatedProducts} />
                           </div>
                         )
                       )}

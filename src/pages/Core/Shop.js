@@ -35,7 +35,7 @@ const Shop = () => {
   const loadFilteredResults = (newFilters) => {
     // console.log(newFilters);
     getFilteredProducts(skip, limit, newFilters).then((data) => {
-      console.log(typeof data.error);
+      // console.log(typeof data.error);
       if (data.error) {
         setError(data.error);
       } else {
@@ -80,7 +80,7 @@ const Shop = () => {
     let toSkip = skip + limit;
     // console.log(newFilters);
     getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
-      console.log(typeof data.error);
+      // console.log(typeof data.error);
       if (data.error) {
         setError(data.error);
       } else {

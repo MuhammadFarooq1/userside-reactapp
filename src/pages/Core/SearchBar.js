@@ -3,7 +3,9 @@ import {
   getpopularsubcategories,
   searchProductsLists,
 } from "../../api's/ecommerceApi/productApi.js";
-import ShowImage from "./ShowProductImage.js";
+import Layout from "../../Layouts/ParentLayout.js";
+import Card from "./Card.js";
+import Shop from "./Shop.js";
 
 const Search = () => {
   const [data, setData] = useState({
@@ -54,10 +56,39 @@ const Search = () => {
   };
   const searchMessege = (searched, results) => {
     if (searched && results.length > 0) {
-      return `Found ${results.length} Products`;
+      // return `Found ${results.length} Products`;
+      return (
+        <div className="py-4 text-center">
+          <div>
+            <lord-icon
+              src="https://cdn.lordicon.com/msoeawqm.json"
+              trigger="loop"
+              colors="primary:#405189,secondary:#0ab39c"
+              style={{ width: "72px", height: "72px" }}
+            ></lord-icon>
+          </div>
+
+          <div className="mt-4">We Found {results.length} Results For You</div>
+        </div>
+      );
     }
     if (searched && results.length < 1) {
-      return `No Products Found`;
+      return (
+        <div className="py-4 text-center">
+          <div>
+            <lord-icon
+              src="https://cdn.lordicon.com/msoeawqm.json"
+              trigger="loop"
+              colors="primary:#405189,secondary:#0ab39c"
+              style={{ width: "72px", height: "72px" }}
+            ></lord-icon>
+          </div>
+
+          <div className="mt-4">
+            <h5>Sorry! No Result Found</h5>
+          </div>
+        </div>
+      );
     }
   };
   const searchedProducts = (results = []) => {
@@ -65,26 +96,37 @@ const Search = () => {
       <div>
         <h2 className="mt-4 mb-4">{searchMessege(searched, results)}</h2>
         <div className="row">
-          <ShowImage item={results} url="product" />
+          <div className="row product-grid-4">
+            {bestProducts(searched, results)}
+            {results.map((product, i) => (
+              <div key={i} className="col-lg-4 col-md-4 col-12 col-sm-6">
+                <Card product={product} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   };
-
+  const bestProducts = (searched, results) => {
+    return !searched && !results.length ? <Shop /> : "";
+  };
   const searchForm = () => (
     <form onSubmit={searchSubmit}>
       <span className="input-group-text mt-3">
         <div className="input-group input-group-lg">
           <div className="input-group-prepend  ">
             <select
-              className="btn "
+              className=" btn  "
               style={{ marginRight: "10px" }}
               onChange={handleChange("subCategory")}
             >
-              <option value="All">Pic Category</option>
+              <option className=" bg-dark " value="All">
+                Pic Category
+              </option>
               {subCategories &&
                 subCategories.map((c, i) => (
-                  <option key={i} value={c._id}>
+                  <option className=" bg-dark " key={i} value={c._id}>
                     {c.name}
                   </option>
                 ))}
@@ -105,10 +147,16 @@ const Search = () => {
   );
 
   return (
-    <div className="row">
-      <div className="container mb-3">{searchForm()}</div>
-      <div className="container mb-3">{searchedProducts(results)}</div>
-    </div>
+    <Layout title="" discription="" className="">
+      <div className="mt-40  ">
+        <div className="container  ">{searchForm()}</div>
+        <div className="container ">{searchedProducts(results)}</div>
+      </div>
+      {/* <div className="row">
+        <div className="container  ml-5">{searchForm()}</div>
+        <div className="container mb-3">{searchedProducts(results)}</div>
+      </div> */}
+    </Layout>
   );
 };
 

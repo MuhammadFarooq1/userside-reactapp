@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ShowImage from "../core/ShowProductImage";
 import moment from "moment";
+
+import QuickView from "../ecommerce/QuickView";
 import { AddItemCart } from "../../hellper/cartHellper.js";
 import { AddItemwishList } from "../../hellper/wishListHellper";
+import ProductModal from "../ecommerce/ProductModal";
+import Timer from "./Timer";
 const Card = ({ product }) => {
   const Navigate = useNavigate();
   const [redirect, setRedirect] = useState(0);
-
+  const [qiuckView, setQuickView] = useState(false);
   const AddToCart = () => {
     AddItemCart(product, () => {
       setRedirect(1);
@@ -30,6 +34,11 @@ const Card = ({ product }) => {
 
   return (
     <div className="product-cart-wrap mb-30">
+      <ProductModal
+        setQuickView={setQuickView}
+        qiuckView={qiuckView}
+        product={product}
+      />
       <div className="product-img-action-wrap">
         {redirectUser(redirect)}
         <ShowImage item={product} url="product" />
@@ -37,10 +46,15 @@ const Card = ({ product }) => {
           <a
             aria-label="Quick view"
             className="action-btn hover-up"
-            data-bs-toggle="modal"
-            data-bs-target="#quickViewModal"
+            // data-bs-toggle="modal"
+            // data-bs-target="#quickViewModal"
           >
-            <i className="fi-rs-eye"></i>
+            <i
+              onClick={() => {
+                setQuickView(true);
+              }}
+              className="fi-rs-eye"
+            ></i>
           </a>
           <a
             aria-label="Add To Wishlist"
@@ -57,9 +71,19 @@ const Card = ({ product }) => {
             <i className="fi-rs-shuffle"></i>
           </Link>
         </div>
-        {/* <div className="product-badges product-badges-position product-badges-mrg">
-          <span className="hot">Hot</span>
-        </div> */}
+        <div
+          className="product-badges product-badges-position product-badges-mrg float-right"
+          // style={{ color: "red" }}
+        >
+          {/* <span className="hot">Hot</span> */}
+          {product.bidDays ?? product.bidDays > 0 ? (
+            <span className="hot">
+              <Timer delayResend={product.bidDays} />
+            </span>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
       <div className="product-content-wrap">
         <div className="product-category">

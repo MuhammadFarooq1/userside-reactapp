@@ -21,10 +21,10 @@ const CartCard = ({
   const handleChange = (productId, price) => (event) => {
     setRun(!run); // run useEffect in parent Cart
     setCount(event.target.value < 1 ? 1 : event.target.value);
-    if (event.target.value >= 1) {
+    if (event.target.value >= 1 && event.target.value <= product.quantity) {
       updateItem(productId, event.target.value);
     }
-    if (event.target.value >= 1) {
+    if (event.target.value >= 1 && event.target.value <= product.quantity) {
       setTotal(event.target.value * price);
     }
   };
@@ -54,6 +54,8 @@ const CartCard = ({
                                 <i className="fi-rs-angle-small-down"></i>
                               </a> */}
             <input
+              min={1}
+              max={product.quantity}
               type="number"
               className="detail-qty border radius  m-auto"
               value={count}

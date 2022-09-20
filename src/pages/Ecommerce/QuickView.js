@@ -1,13 +1,29 @@
+import React, { useState } from "react";
 import Layout from "../../Layouts/ParentLayout";
+import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ImgProduct_1 from "../../assets/imgs/shop/product-1-1.jpg";
 import ImgProduct_2 from "../../assets/imgs/shop/product-2-1.jpg";
 import ImgProduct_3 from "../../assets/imgs/shop/product-3-1.jpg";
-const QuickView = ({ closeQuickView , product }) => {
+// const QuickView = ({ closeQuickView, product }) => {
+const QuickView = ({ closeQuickView, product }) => {
+  const [largeModal, setLargeModal] = useState(false);
+
+  // return (
+  //   <>
+  //     <Modal
+  //       className="fade bd-example-modal-lg"
+  //       show={closeQuickView}
+  //       size="lg"
+  //     >
+  //       <Modal.Body> </Modal.Body>
+  //     </Modal>
+  //   </>
+  // );
   return (
     <div
-      //className="modal fade custom-modal"
-      //  id="quickViewModal"
+      className="modal fade custom-modal"
+      id="quickViewModal"
       tabIndex="-1"
       aria-labelledby="quickViewModalLabel"
     >
@@ -334,6 +350,5 @@ const QuickView = ({ closeQuickView , product }) => {
     </div>
   );
 };
-
 
 export default QuickView;

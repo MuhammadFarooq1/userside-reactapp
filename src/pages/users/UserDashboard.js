@@ -85,7 +85,7 @@ const UserDashboard = () => {
             {userHistory &&
               userHistory.map((h, i) => {
                 return (
-                  <div>
+                  <div key={i}>
                     <hr />
                     {h.products.map((p, i) => {
                       return (
