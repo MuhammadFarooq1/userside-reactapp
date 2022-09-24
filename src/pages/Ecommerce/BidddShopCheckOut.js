@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { creatOrder } from "../../api's/order/orderApi.js";
 
-const ShopCheckOut = ({
+const BidShopCheckOut = ({
   checkOutProducts,
   setRun = (f) => f, // default value of function
   run = undefined,
@@ -44,8 +44,11 @@ const ShopCheckOut = ({
   }, []);
   const getTotal = () => {
     return checkOutProducts.reduce((currentValue, nextValue) => {
-      return currentValue + nextValue.count * nextValue.price;
+      return currentValue + nextValue.bidQuantity * nextValue.biddingAmount;
     }, 0);
+    //   return checkOutProducts.reduce((currentValue, nextValue) => {
+    //     return currentValue + nextValue.bidQuantity * nextValue.bidTotal;
+    //   }, 0);
   };
   // hadle field change
   const handleAdress = (event) => {
@@ -76,7 +79,9 @@ const ShopCheckOut = ({
         // );
         const paymentData = {
           paymentMethodNonce: nonce,
+          //   amount: getTotal(checkOutProducts.product),
           amount: getTotal(checkOutProducts),
+          //  amount: 1200,
         };
 
         processPayment(userId, token, paymentData)
@@ -85,10 +90,10 @@ const ShopCheckOut = ({
 
             // creat order
             const creatOrderData = {
-              products: checkOutProducts,
+              products: checkOutProducts.product,
               transaction_id: responce.transaction.id,
               amount: responce.transaction.amount,
-              amount: responce.transaction.amount,
+              //  amount: responce.transaction.amount,
               address: mydata.address,
               postalCode: mydata.postalCode,
               phone: mydata.phonNo,
@@ -271,22 +276,28 @@ const ShopCheckOut = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {checkOutProducts.map((product, productscheckoutkey) => (
-                        <tr key={productscheckoutkey}>
-                          <td className="image product-thumbnail">
-                            <ShowCartImage item={product} url="product" />
-                          </td>
-                          <td>
-                            <h5>
-                              <a>{product.name}</a>
-                            </h5>
-                            <span className="product-qty">
-                              {product.subCategory.name}
-                            </span>
-                          </td>
-                          <td>{product.count} </td>
-                        </tr>
-                      ))}
+                      {checkOutProducts &&
+                        checkOutProducts.map(
+                          (checkproduct, productscheckoutkey) => (
+                            <tr key={productscheckoutkey}>
+                              <td className="image product-thumbnail">
+                                <ShowCartImage
+                                  item={checkproduct.product}
+                                  url="product"
+                                />
+                              </td>
+                              <td>
+                                <h5>
+                                  <a>{checkproduct.product.name}</a>
+                                </h5>
+                                <span className="product-qty">
+                                  {/* {product.subCategory.name} */}
+                                </span>
+                              </td>
+                              <td>{checkproduct.bidQuantity} </td>
+                            </tr>
+                          )
+                        )}
                       <tr>
                         <th>SubTotal</th>
                         <td className="product-subtotal" colSpan="2">
@@ -387,4 +398,4 @@ const ShopCheckOut = ({
   return <div>{showCheckout()}</div>;
 };
 
-export default ShopCheckOut;
+export default BidShopCheckOut;

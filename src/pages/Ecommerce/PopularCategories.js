@@ -21,9 +21,11 @@ const PopularCategoriesCarousel = ({ PopularCategoriesSlider }) => {
       <Slider {...settings}>
         {PopularCategoriesSlider.map((popularCategory, keyPopularCategory) => (
           <div key={keyPopularCategory} className="card-1   ">
-            <ShowCategoryImage item={popularCategory} url="category" />
+            <ShowCategoryImage item={popularCategory} url="subCategory" />
             <h5>
-              <Link to={"/"}>{popularCategory.name}</Link>
+              <Link to={`/products-in-category/${popularCategory._id}`}>
+                {popularCategory.name}
+              </Link>
             </h5>
           </div>
         ))}

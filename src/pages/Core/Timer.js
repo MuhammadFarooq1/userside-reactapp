@@ -1,41 +1,57 @@
 import React, { useState, useEffect, useTransition } from "react";
 
 const Timer = ({ delayResend }) => {
-  let delayResendTime = delayResend * 86400;
-  const [delay, setDelay] = useState(+delayResendTime);
-  const [days, setDays] = useState(0);
-  const [hours, setHour] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const calculateTimeLeft = () => {
+    // let date1 = delayResend.getDate();
+    // console.log("date", date1);
+    // let year = new Date().getFullYear();
+    const date1 = new Date(delayResend);
+    const date2 = new Date();
 
-  const [isPending, startTransition] = useTransition();
+    //const difference = +new Date(`${delayResend}-10-1`) - +new Date();
+    const difference = Math.abs(date2 - date1);
+    let timeLeft = {};
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      startTransition(() => {
-        setDelay(delay - 1);
-        setDays(Math.floor(delay / 86400));
-        setHour(Math.floor(delay / 3600));
-        setMinutes(Math.floor(delay / 60));
-        setSeconds(Math.floor(delay % 60));
-      });
-    }, 1000);
-
-    if (delay === 0) {
-      clearInterval(timer);
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
     }
 
-    return () => {
-      clearInterval(timer);
-    };
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [year] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
   });
 
-  return (
-    <>
+  const timerComponents = [];
+
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval]) {
+      return;
+    }
+
+    timerComponents.push(
       <span>
-        {days} :{hours} : {minutes}:{seconds}
+        {timeLeft[interval]} {interval}{" "}
       </span>
-    </>
+    );
+  });
+  return (
+    <div>
+      {/* <h1>HacktoberFest {year} Countdown</h1>
+      <h2>With React Hooks!</h2> */}
+      {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+    </div>
   );
 };
 

@@ -1,16 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Layout from "../../Layouts/ParentLayout";
-import ImgProduct_1_1 from "../../assets/imgs/shop/product-1-2.jpg";
-import ImgProduct_1_2 from "../../assets/imgs/shop/product-11-2.jpg";
-import ImgProduct_1_3 from "../../assets/imgs/shop/product-6-1.jpg";
-import ShowCartImage from "./ShowCartImage";
-import StripeCheckout from "react-stripe-checkout";
-import { getTotalItemInCart } from "../../hellper/cartHellper";
 import { fetchUserPassedBiddingProducts } from "../../api's/bidding/bidApi.js";
 import { Link } from "react-router-dom";
 import BidCartCard from "../core/BidCartCard";
-import CheckOut from "./CheckOut";
-import ShopCheckOut from "./ShopCheckout";
+import BidShopCheckOut from "./BidddShopCheckOut";
 import { isAuthenticated } from "../../api's/auth";
 
 const BidCart = () => {
@@ -130,7 +123,7 @@ const BidCart = () => {
 
               {/* cart checkout . */}
               {/* <CheckOut checkOutProducts={items} /> */}
-              <ShopCheckOut
+              <BidShopCheckOut
                 checkOutProducts={items}
                 setRun={setRun}
                 run={run}

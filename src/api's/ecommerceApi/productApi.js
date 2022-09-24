@@ -31,7 +31,33 @@ export const readProductDetail = (productId) => {
     })
     .catch((error) => console.log(error));
 };
-
+export const listOfProductsInCategory = (categoryId) => {
+  return fetch(`${API}/Products-incategory/${categoryId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+export const listOfProductsInUserID = (userId) => {
+  return fetch(`${API}/product/userProducts/${userId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+export const bestProductbySold = () => {
+  return fetch(`${API}/home/best-product/sold`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
 export const getAllProducts = async () => {
   try {
     const response = await fetch(`${API}/getallproducts`, {
@@ -81,7 +107,7 @@ export const getProductsByArrival = (sortBy) => {
 };
 export const getPopularCategories = (sortBy) => {
   return fetch(
-    `${API}/popularcategories?sortBy=${sortBy}&order=desc&limit=10`,
+    `${API}/popular-subcategories?sortBy=${sortBy}&order=desc&limit=10`,
     {
       method: "GET",
     }

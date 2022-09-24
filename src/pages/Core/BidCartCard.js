@@ -32,13 +32,13 @@ const BidCartCard = ({
           </p>
         </td>
         <td className="price" data-title="Price">
-          <span>Rs {Bidproduct.product.price} </span>
+          <span>Rs {Bidproduct.biddingAmount} </span>
         </td>
         <td className="text-center" data-title="Stock">
-          <p className="font-xs">{Bidproduct.product.quantity}</p>
+          <p className="font-xs">{Bidproduct.bidQuantity}</p>
         </td>
         <td className="text-right" data-title="Cart">
-          <span> PKR {total} </span>
+          <span> PKR {Bidproduct.bidTotal} </span>
         </td>
         <td className="action" data-title="Remove">
           <a className="text-muted">

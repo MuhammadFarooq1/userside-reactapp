@@ -14,6 +14,8 @@ import Account from "../src/pages/social/Account";
 import FourOfour from "../src/pages/Authentication/Four_O_Four";
 import Shop from "./pages/core/Shop";
 import ProductDetaile from "./pages/core/ProductDetail";
+import ProductByCategory from "./pages/core/ProductsByCategory";
+import ProductByUserID from "./pages/core/ProductsByuserID";
 import UserDashboard from "./pages/users/UserDashboard";
 import SearchBar from "./pages/core/SearchBar";
 import UserProfile from "./pages/users/UserProfile";
@@ -41,6 +43,17 @@ const MyRoutes = () => {
           exact
           element={<ProductDetaile />}
         />
+        <Route
+          path="/products-in-category/:categoryId"
+          exact
+          element={<ProductByCategory />}
+        />
+        <Route
+          path="/user/products/:userId"
+          exact
+          element={<ProductByUserID />}
+        />
+
         <Route path="/contactus" exact element={<ContacUs />} />
         <Route path="/account" exact element={<Account />} />
         <Route path="/404" exact element={<FourOfour />} />

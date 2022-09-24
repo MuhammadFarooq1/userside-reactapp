@@ -111,7 +111,25 @@ const ProductModal = ({
                     </div>
                     <div className="col-md-6 col-sm-12 col-xs-12">
                       <div className="detail-info">
-                        <h3 className="title-detail mt-30">{product.name}</h3>
+                        <h2 className="title-detail mt-30">{product.name}</h2>
+
+                        <div className="product-detail-rating">
+                          <div className="pro-details-brand">
+                            <span>
+                              Seller:
+                              {product.userID && product.userID.role != 2 ? (
+                                <Link
+                                  to={`user/products/${product.userID._id}`}
+                                  className="title-detail mt-30"
+                                >
+                                  {product.userID.username}
+                                </Link>
+                              ) : (
+                                ""
+                              )}
+                            </span>
+                          </div>
+                        </div>
                         <div className="product-detail-rating">
                           <div className="pro-details-brand">
                             <span>

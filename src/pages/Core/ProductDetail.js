@@ -18,6 +18,7 @@ import {
   TabPane,
   Input,
   Label,
+  ListGroup,
 } from "reactstrap";
 import { isAuthenticated } from "../../api's/auth";
 import {
@@ -31,7 +32,6 @@ import {
   createProductReview,
 } from "../../api's/ecommerceApi/productApi";
 import { useParams } from "react-router-dom";
-import myCard from "./Card";
 import ShowSingalProductImage from "./ShowSingalProduct";
 const ProductDetaile = () => {
   const pid = useParams();
@@ -60,6 +60,8 @@ const ProductDetaile = () => {
   const [bidValues, setBidValues] = useState({
     userBiddingProduct: "",
     biddingAmount: "",
+    bidQuantity: 1,
+    biddingSubTotal: 0,
     discription: "",
     bidLoading: false,
     bidError: "",
@@ -71,6 +73,8 @@ const ProductDetaile = () => {
     userBiddingProduct,
     biddingAmount,
     discription,
+    bidQuantity,
+    biddingSubTotal,
     bidError,
     bidLoading,
     updatedBidData,
@@ -106,6 +110,7 @@ const ProductDetaile = () => {
           ...bidValues,
           userBiddingProduct: data,
           biddingAmount: data.biddingAmount,
+          bidQuantity: data.bidQuantity,
           discription: data.discription,
         });
         // setBiddingAmount(data.biddingAmount);
@@ -152,21 +157,27 @@ const ProductDetaile = () => {
   };
   const clickUpdateSubmit = (e) => {
     e.preventDefault();
-    UpdateUserBidd(userId, userBiddingProduct._id, token, {
+    const updateBidData = {
       biddingAmount,
       discription,
-    }).then((data) => {
-      if (data.error) {
-        setBidValues({ ...values, bidError: true });
-      } else {
-        setValues({
-          ...values,
-          biddingAmount: data.biddingAmount,
-          discription: data.discription,
-          updatedBidData: true,
-        });
+      bidQuantity,
+      bidTotal: bidQuantity * biddingAmount,
+    };
+    UpdateUserBidd(userId, userBiddingProduct._id, token, updateBidData).then(
+      (data) => {
+        if (data.error) {
+          setBidValues({ ...values, bidError: true });
+        } else {
+          setValues({
+            ...values,
+            biddingAmount: data.biddingAmount,
+            discription: data.discription,
+            bidQuantity: data.bidQuantity,
+            updatedBidData: true,
+          });
+        }
       }
-    });
+    );
   };
   const showError = () => (
     <h2 className="alert alert-danger" style={{ display: error ? "" : "none" }}>
@@ -222,6 +233,8 @@ const ProductDetaile = () => {
     const creatBidData = {
       product: pid.productId,
       seller: product.userID,
+      bidQuantity: bidQuantity,
+      bidTotal: bidQuantity * biddingAmount,
       biddingAmount: biddingAmount,
       discription: discription,
     };
@@ -292,7 +305,9 @@ const ProductDetaile = () => {
                                 Description
                               </Label>
                               <div className="short-desc mb-30">
-                                <p className="font-sm">{product.discription}</p>
+                                <p className="font-sm">
+                                  {product.bidDiscription}
+                                </p>
                               </div>
                             </Row>
                           </CardBody>
@@ -307,7 +322,7 @@ const ProductDetaile = () => {
                             <CardBody>
                               <form className=" container mb-10  ">
                                 <Row>
-                                  <Col sm={12}>
+                                  <Col sm={6}>
                                     <div className="mb-3">
                                       <label
                                         className="form-label"
@@ -328,6 +343,32 @@ const ProductDetaile = () => {
                                             "biddingAmount"
                                           )}
                                           value={biddingAmount}
+                                        />
+                                      </div>
+                                    </div>
+                                  </Col>
+                                  <Col sm={6}>
+                                    <div className="mb-3">
+                                      <label
+                                        className="form-label"
+                                        htmlFor="product-price-input"
+                                      >
+                                        Quantity
+                                      </label>
+                                      <div className="input-group mb-3">
+                                        <span className="input-group-text">
+                                          QTY
+                                        </span>
+                                        <input
+                                          type="Number"
+                                          min={1}
+                                          max={product.quantity}
+                                          className="form-control"
+                                          onChange={handleBidChange(
+                                            "bidQuantity"
+                                          )}
+                                          value={bidQuantity}
+                                          placeholder="Enter Quantity"
                                         />
                                       </div>
                                     </div>
@@ -365,7 +406,7 @@ const ProductDetaile = () => {
                             </CardHeader>
                             <CardBody>
                               <Row>
-                                <Col sm={12}>
+                                <Col sm={6}>
                                   <div className="mb-3">
                                     <label
                                       className="form-label"
@@ -385,6 +426,32 @@ const ProductDetaile = () => {
                                         )}
                                         value={biddingAmount}
                                         placeholder="Enter price"
+                                      />
+                                    </div>
+                                  </div>
+                                </Col>
+                                <Col sm={6}>
+                                  <div className="mb-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="product-price-input"
+                                    >
+                                      Quantity
+                                    </label>
+                                    <div className="input-group mb-3">
+                                      <span className="input-group-text">
+                                        QTY
+                                      </span>
+                                      <input
+                                        type="Number"
+                                        min={1}
+                                        max={product.quantity}
+                                        className="form-control"
+                                        onChange={handleBidChange(
+                                          "bidQuantity"
+                                        )}
+                                        value={bidQuantity}
+                                        placeholder="Enter Quantity"
                                       />
                                     </div>
                                   </div>
@@ -437,16 +504,12 @@ const ProductDetaile = () => {
                           </span>
                         </div>
                         <div className="product-rate-cover text-end">
-                          <div className="product-rate d-inline-block">
-                            <div
-                              className="product-rating"
-                              style={{ width: "90%" }}
-                            ></div>
-                          </div>
-                          <span className="font-small ml-5 text-muted">
-                            {" "}
-                            (25 reviews)
-                          </span>
+                          <h3 className="section-title style-1 ">
+                            <Rating
+                              value={product.rating}
+                              text={`${product.numReviews} reviews`}
+                            />
+                          </h3>
                         </div>
                       </div>
                       <div className="clearfix product-price-cover">
@@ -809,224 +872,73 @@ const ProductDetaile = () => {
                       </ul>
                     </div> */}
                     <h3 className="section-title style-1 mb-30 mt-30">
-                      Reviews (3){" "}
-                      <Rating
-                        value={product.rating}
-                        text={`${product.numReviews} reviews`}
-                      />
+                      Reviews {product.numReviews}
                     </h3>
                     {/* <!--Comments--> */}
                     <div className="comments-area style-2">
-                      <div className="row">
-                        <div className="col-lg-8">
-                          <h4 className="mb-30">
-                            Customer questions & answers
-                          </h4>
-                          <div className="comment-list">
-                            <div className="single-comment justify-content-between d-flex">
-                              <div className="user justify-content-between d-flex">
-                                <div className="thumb text-center">
-                                  <img
-                                    src="assets/imgs/page/avatar-6.jpg"
-                                    alt=""
-                                  />
-                                  <h6>
-                                    <a href="#">Jacky Chan</a>
-                                  </h6>
-                                  <p className="font-xxs">Since 2012</p>
-                                </div>
-                                <div className="desc">
-                                  <div className="product-rate d-inline-block">
-                                    <div
-                                      className="product-rating"
-                                      style={{ width: "90%" }}
-                                    ></div>
-                                  </div>
-                                  <p>
-                                    Thank you very fast shipping from Poland
-                                    only 3days.
-                                  </p>
-                                  <div className="d-flex justify-content-between">
-                                    <div className="d-flex align-items-center">
-                                      <p className="font-xs mr-30">
-                                        December 4, 2020 at 3:12 pm{" "}
-                                      </p>
-                                      <a
-                                        href="#"
-                                        className="text-brand btn-reply"
-                                      >
-                                        Reply{" "}
-                                        <i className="fi-rs-arrow-right"></i>{" "}
-                                      </a>
+                      <h2 className="mb-30">Customer reviews</h2>
+                      <h3 className="section-title style-1 mb-30 mt-30">
+                        <Rating
+                          value={product.rating}
+                          text={`${product.numReviews} reviews`}
+                        />
+                      </h3>
+                      <div className="comment-list">
+                        <div className="single-comment justify-content-between d-flex">
+                          <div className="user justify-content-between d-flex">
+                            <div className="row">
+                              {product && product.numReviews > 0
+                                ? product.reviews.map((review, i) => (
+                                    <div className="col-lg-12">
+                                      <div className="row">
+                                        <div className="col-lg-4">
+                                          <div className="thumb text-center">
+                                            <h6>
+                                              <a>{review.name}</a>
+                                            </h6>
+                                            {/* <p className="font-xxs">Since 2012</p> */}
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-8">
+                                          <div key={i} className="desc">
+                                            <div className="product-rate d-inline-block">
+                                              <div
+                                                className="product-rating"
+                                                style={{ width: "90%" }}
+                                              ></div>
+                                            </div>
+                                            <p>{review.comment}</p>
+                                            <div className="d-flex justify-content-between">
+                                              <div className="d-flex align-items-center">
+                                                <p className="font-xs mr-30">
+                                                  {review.createdAt.substring(
+                                                    0,
+                                                    10
+                                                  )}
+                                                </p>
+                                                {/* <a
+                                                href="#"
+                                                className="text-brand btn-reply"
+                                              >
+                                                Reply{" "}
+                                                <i className="fi-rs-arrow-right"></i>{" "}
+                                              </a> */}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </div>
+                                  ))
+                                : ""}
                             </div>
-                            {/* <!--single-comment --> */}
-                            <div className="single-comment justify-content-between d-flex">
-                              <div className="user justify-content-between d-flex">
-                                <div className="thumb text-center">
-                                  <img
-                                    src="assets/imgs/page/avatar-7.jpg"
-                                    alt=""
-                                  />
-                                  <h6>
-                                    <a href="#">Ana Rosie</a>
-                                  </h6>
-                                  <p className="font-xxs">Since 2008</p>
-                                </div>
-                                <div className="desc">
-                                  <div className="product-rate d-inline-block">
-                                    <div
-                                      className="product-rating"
-                                      style={{ width: "90%" }}
-                                    ></div>
-                                  </div>
-                                  <p>Great low price and works well.</p>
-                                  <div className="d-flex justify-content-between">
-                                    <div className="d-flex align-items-center">
-                                      <p className="font-xs mr-30">
-                                        December 4, 2020 at 3:12 pm{" "}
-                                      </p>
-                                      <a
-                                        href="#"
-                                        className="text-brand btn-reply"
-                                      >
-                                        Reply{" "}
-                                        <i className="fi-rs-arrow-right"></i>{" "}
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            {/* <!--single-comment --> */}
-                            <div className="single-comment justify-content-between d-flex">
-                              <div className="user justify-content-between d-flex">
-                                <div className="thumb text-center">
-                                  <img
-                                    src="assets/imgs/page/avatar-8.jpg"
-                                    alt=""
-                                  />
-                                  <h6>
-                                    <a href="#">Steven Keny</a>
-                                  </h6>
-                                  <p className="font-xxs">Since 2010</p>
-                                </div>
-                                <div className="desc">
-                                  <div className="product-rate d-inline-block">
-                                    <div
-                                      className="product-rating"
-                                      style={{ width: "90%" }}
-                                    ></div>
-                                  </div>
-                                  <p>
-                                    Authentic and Beautiful, Love these way more
-                                    than ever expected They are Great earphones
-                                  </p>
-                                  <div className="d-flex justify-content-between">
-                                    <div className="d-flex align-items-center">
-                                      <p className="font-xs mr-30">
-                                        December 4, 2020 at 3:12 pm{" "}
-                                      </p>
-                                      <a
-                                        href="#"
-                                        className="text-brand btn-reply"
-                                      >
-                                        Reply{" "}
-                                        <i className="fi-rs-arrow-right"></i>{" "}
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            {/* <!--single-comment --> */}
                           </div>
                         </div>
-                        <div className="col-lg-4">
-                          <h4 className="mb-30">Customer reviews</h4>
-                          <div className="d-flex mb-30">
-                            <div className="product-rate d-inline-block mr-15">
-                              <div
-                                className="product-rating"
-                                style={{ width: "90%" }}
-                              ></div>
-                            </div>
-                            <h6>4.8 out of 5</h6>
-                          </div>
-                          <div className="progress">
-                            <span>5 star</span>
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{ width: "50%" }}
-                              aria-valuenow="50"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              50%
-                            </div>
-                          </div>
-                          <div className="progress">
-                            <span>4 star</span>
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{ width: "25%" }}
-                              aria-valuenow="25"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              25%
-                            </div>
-                          </div>
-                          <div className="progress">
-                            <span>3 star</span>
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{ width: "45%" }}
-                              aria-valuenow="45"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              45%
-                            </div>
-                          </div>
-                          <div className="progress">
-                            <span>2 star</span>
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{ width: "45%" }}
-                              aria-valuenow="65"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              65%
-                            </div>
-                          </div>
-                          <div className="progress mb-30">
-                            <span>1 star</span>
-                            <div
-                              className="progress-bar"
-                              role="progressbar"
-                              style={{ width: "85%" }}
-                              aria-valuenow="85"
-                              aria-valuemin="0"
-                              aria-valuemax="100"
-                            >
-                              85%
-                            </div>
-                          </div>
-                          <a href="#" className="font-xs text-muted">
-                            How are ratings calculated?
-                          </a>
-                        </div>
+
+                        {/* <!--single-comment --> */}
                       </div>
                     </div>
+
                     {/* <!--comment form--> */}
                     <div className="comment-form">
                       <h4 className="mb-15">Add a review</h4>
@@ -1043,6 +955,7 @@ const ProductDetaile = () => {
                                 <div className="form-group">
                                   <label htmlFor="rating">Rating</label>
                                   <select
+                                    className="form-control mt-2"
                                     onChange={handleChange("rating")}
                                     name={rating}
                                   >

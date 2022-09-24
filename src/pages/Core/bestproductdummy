@@ -1,0 +1,434 @@
+import React, { useState, useEffect, Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import ImgBrandBanner_9 from "../../assets/imgs/banner/banner-9.jpg";
+import ImgCommon from "../../assets/imgs/shop/product-1-1.jpg";
+
+import { AddItemCart } from "../../hellper/cartHellper.js";
+import { AddItemwishList } from "../../hellper/wishListHellper";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  CardHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
+  Input,
+  Label,
+} from "reactstrap";
+import { isAuthenticated } from "../../api's/auth";
+
+import { bestProductbySold } from "../../api's/ecommerceApi/productApi";
+import Layout from "../../Layouts/ParentLayout";
+
+const BestSelingProduct = () => {
+  const Navigate = useNavigate();
+  const [redirect, setRedirect] = useState(0);
+  const [bestProduct, setBestProduct] = useState({});
+  const [error, setError] = useState(false);
+
+  const loadbestProductbySold = () => {
+    bestProductbySold().then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setBestProduct(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadbestProductbySold();
+  }, []);
+  const showError = () => (
+    <h2 className="alert alert-danger" style={{ display: error ? "" : "none" }}>
+      {error}
+    </h2>
+  );
+
+  const AddToCart = () => {
+    AddItemCart(bestProduct, () => {
+      setRedirect(1);
+    });
+  };
+  const AddToWishList = () => {
+    AddItemwishList(bestProduct, () => {
+      setRedirect(2);
+    });
+  };
+  const redirectUser = (redirect) => {
+    if (redirect === 1) {
+      Navigate("/cart");
+    }
+    if (redirect === 2) {
+      Navigate("/wishlist");
+    }
+    if (redirect === 3) {
+      Navigate("/wishlist");
+    }
+  };
+
+  return (
+    <Layout title="" discription="" className="">
+      <section className="bg-grey-9 section-padding">
+        <div className="container pt-15 pb-25">
+          <div className="heading-tab d-flex">
+            <div className="heading-tab-left wow fadeIn animated">
+              <h3 className="section-title mb-20">
+                <span>Monthly</span> Best Sell
+              </h3>
+            </div>
+            <div className="heading-tab-right wow fadeIn animated">
+              <ul
+                className="nav nav-tabs right no-border"
+                id="myTab-1"
+                role="tablist"
+              >
+                <li className="nav-item" role="presentation">
+                  <button
+                    className="nav-link active"
+                    id="nav-tab-one-1"
+                    data-bs-toggle="tab"
+                    data-bs-target="#tab-one-1"
+                    type="button"
+                    role="tab"
+                    aria-controls="tab-one"
+                    aria-selected="true"
+                  >
+                    Featured
+                  </button>
+                </li>
+                {/* <li className="nav-item" role="presentation">
+                    <button
+                      className="nav-link"
+                      id="nav-tab-two-1"
+                      data-bs-toggle="tab"
+                      data-bs-target="#tab-two-1"
+                      type="button"
+                      role="tab"
+                      aria-controls="tab-two"
+                      aria-selected="false"
+                    >
+                      Popular
+                    </button>
+                  </li>
+                  <li className="nav-item" role="presentation">
+                    <button
+                      className="nav-link"
+                      id="nav-tab-three-1"
+                      data-bs-toggle="tab"
+                      data-bs-target="#tab-three-1"
+                      type="button"
+                      role="tab"
+                      aria-controls="tab-three"
+                      aria-selected="false"
+                    >
+                      New added
+                    </button>
+                  </li> */}
+              </ul>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-3 d-none d-lg-flex">
+              <div className="banner-img style-2 wow fadeIn animated">
+                <img src={ImgBrandBanner_9} alt="" />
+                <div className="banner-text">
+                  <span>Woman Area</span>
+                  <h4 className="mt-5">
+                    Save 17% on <br />
+                    Clothing
+                  </h4>
+                  <a href="shop-grid-right.html" className="text-white">
+                    Shop Now <i className="fi-rs-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-9 col-md-12">
+              <div
+                className="tab-content wow fadeIn animated"
+                id="myTabContent-1"
+              >
+                <div
+                  className="tab-pane fade show active"
+                  id="tab-one-1"
+                  role="tabpanel"
+                  aria-labelledby="tab-one-1"
+                >
+                  <div className="carausel-4-columns-cover arrow-center position-relative">
+                    <div
+                      className="slider-arrow slider-arrow-2 carausel-4-columns-arrow"
+                      id="carausel-4-columns-arrows"
+                    ></div>
+                    <div
+                      className="carausel-4-columns carausel-arrow-center"
+                      id="carausel-4-columns"
+                    >
+                      <div className="product-img-action-wrap">
+                        <div className="product-img product-img-zoom">
+                          <a href="shop-product-right.html">
+                            <img
+                              className="default-img"
+                              src={ImgCommon}
+                              alt=""
+                            />
+                            <img className="hover-img" src={ImgCommon} alt="" />
+                          </a>
+                        </div>
+                        <div className="product-action-1">
+                          <a
+                            aria-label="Quick view"
+                            className="action-btn small hover-up"
+                            data-bs-toggle="modal"
+                            data-bs-target="#quickViewModal"
+                          >
+                            <i className="fi-rs-eye"></i>
+                          </a>
+                          <a
+                            aria-label="Add To Wishlist"
+                            className="action-btn small hover-up"
+                            href="shop-wishlist.html"
+                          >
+                            <i className="fi-rs-heart"></i>
+                          </a>
+                          <a
+                            aria-label="Compare"
+                            className="action-btn small hover-up"
+                            href="shop-compare.html"
+                          >
+                            <i className="fi-rs-shuffle"></i>
+                          </a>
+                        </div>
+                        <div className="product-badges product-badges-position product-badges-mrg">
+                          <span className="hot">Hot</span>
+                        </div>
+                      </div>
+                      <div className="product-content-wrap">
+                        <div className="product-category">
+                          <a href="shop-grid-right.html">Nulla</a>
+                        </div>
+                        <h2>
+                          <a href="shop-product-right.html">Maecenas eget</a>
+                        </h2>
+                        <div className="rating-result" title="90%">
+                          <span>
+                            <span>70%</span>
+                          </span>
+                        </div>
+                        <div className="product-price">
+                          <span>$238.85 </span>
+                          <span className="old-price">$245.8</span>
+                        </div>
+                        <div className="product-action-1 show">
+                          <a
+                            aria-label="Add To Cart"
+                            className="action-btn hover-up"
+                            href="shop-cart.html"
+                          >
+                            <i className="fi-rs-shopping-bag-add"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* <!--End tab-pane--> */}
+                {/* <div
+                    className="tab-pane fade"
+                    id="tab-two-1"
+                    role="tabpanel"
+                    aria-labelledby="tab-two-1"
+                  >
+                    <div className="carausel-4-columns-cover arrow-center position-relative">
+                      <div
+                        className="slider-arrow slider-arrow-2 carausel-4-columns-arrow"
+                        id="carausel-4-columns-2-arrows"
+                      ></div>
+                      <div
+                        className="carausel-4-columns carausel-arrow-center"
+                        id="carausel-4-columns-2"
+                      >
+                        <div className="product-cart-wrap">
+                          <div className="product-img-action-wrap">
+                            <div className="product-img product-img-zoom">
+                              <a href="shop-product-right.html">
+                                <img
+                                  className="default-img"
+                                  src="assets/imgs/shop/product-6-1.jpg"
+                                  alt=""
+                                />
+                                <img
+                                  className="hover-img"
+                                  src="assets/imgs/shop/product-6-2.jpg"
+                                  alt=""
+                                />
+                              </a>
+                            </div>
+                            <div className="product-action-1">
+                              <a
+                                aria-label="Quick view"
+                                className="action-btn small hover-up"
+                                data-bs-toggle="modal"
+                                data-bs-target="#quickViewModal"
+                              >
+                                <i className="fi-rs-eye"></i>
+                              </a>
+                              <a
+                                aria-label="Add To Wishlist"
+                                className="action-btn small hover-up"
+                                href="shop-wishlist.html"
+                              >
+                                <i className="fi-rs-heart"></i>
+                              </a>
+                              <a
+                                aria-label="Compare"
+                                className="action-btn small hover-up"
+                                href="shop-compare.html"
+                              >
+                                <i className="fi-rs-shuffle"></i>
+                              </a>
+                            </div>
+                            <div className="product-badges product-badges-position product-badges-mrg">
+                              <span className="hot">Hot</span>
+                            </div>
+                          </div>
+                          <div className="product-content-wrap">
+                            <div className="product-category">
+                              <a href="shop-grid-right.html">Watch</a>
+                            </div>
+                            <h2>
+                              <a href="shop-product-right.html">
+                                Cotton Leaf Printed 2
+                              </a>
+                            </h2>
+                            <div className="rating-result" title="90%">
+                              <span>
+                                <span>70%</span>
+                              </span>
+                            </div>
+                            <div className="product-price">
+                              <span>$238.85 </span>
+                              <span className="old-price">$245.8</span>
+                            </div>
+                            <div className="product-action-1 show">
+                              <a
+                                aria-label="Add To Cart"
+                                className="action-btn hover-up"
+                                href="shop-cart.html"
+                              >
+                                <i className="fi-rs-shopping-bag-add"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="tab-pane fade"
+                    id="tab-three-1"
+                    role="tabpanel"
+                    aria-labelledby="tab-three-1"
+                  >
+                    <div className="carausel-4-columns-cover arrow-center position-relative">
+                      <div
+                        className="slider-arrow slider-arrow-2 carausel-4-columns-arrow"
+                        id="carausel-4-columns-3-arrows"
+                      ></div>
+                      <div
+                        className="carausel-4-columns carausel-arrow-center"
+                        id="carausel-4-columns-3"
+                      >
+                        <div className="product-cart-wrap">
+                          <div className="product-img-action-wrap">
+                            <div className="product-img product-img-zoom">
+                              <a href="shop-product-right.html">
+                                <img
+                                  className="default-img"
+                                  src="assets/imgs/shop/product-8-1.jpg"
+                                  alt=""
+                                />
+                                <img
+                                  className="hover-img"
+                                  src="assets/imgs/shop/product-8-2.jpg"
+                                  alt=""
+                                />
+                              </a>
+                            </div>
+                            <div className="product-action-1">
+                              <a
+                                aria-label="Quick view"
+                                className="action-btn small hover-up"
+                                data-bs-toggle="modal"
+                                data-bs-target="#quickViewModal"
+                              >
+                                <i className="fi-rs-eye"></i>
+                              </a>
+                              <a
+                                aria-label="Add To Wishlist"
+                                className="action-btn small hover-up"
+                                href="shop-wishlist.html"
+                              >
+                                <i className="fi-rs-heart"></i>
+                              </a>
+                              <a
+                                aria-label="Compare"
+                                className="action-btn small hover-up"
+                                href="shop-compare.html"
+                              >
+                                <i className="fi-rs-shuffle"></i>
+                              </a>
+                            </div>
+                            <div className="product-badges product-badges-position product-badges-mrg">
+                              <span className="hot">Hot</span>
+                            </div>
+                          </div>
+                          <div className="product-content-wrap">
+                            <div className="product-category">
+                              <a href="shop-grid-right.html">Watch</a>
+                            </div>
+                            <h2>
+                              <a href="shop-product-right.html">
+                                Cotton Leaf Printed
+                              </a>
+                            </h2>
+                            <div className="rating-result" title="90%">
+                              <span>
+                                <span>70%</span>
+                              </span>
+                            </div>
+                            <div className="product-price">
+                              <span>$238.85 </span>
+                              <span className="old-price">$245.8</span>
+                            </div>
+                            <div className="product-action-1 show">
+                              <a
+                                aria-label="Add To Cart"
+                                className="action-btn hover-up"
+                                href="shop-cart.html"
+                              >
+                                <i className="fi-rs-shopping-bag-add"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+              </div>
+              {/* <!--End tab-content--> */}
+            </div>
+            {/* <!--End Col-lg-9--> */}
+          </div>
+        </div>
+      </section>
+    </Layout>
+  );
+};
+
+export default BestSelingProduct;

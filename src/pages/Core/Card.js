@@ -8,6 +8,7 @@ import { AddItemCart } from "../../hellper/cartHellper.js";
 import { AddItemwishList } from "../../hellper/wishListHellper";
 import ProductModal from "../ecommerce/ProductModal";
 import Timer from "./Timer";
+import Rating from "./Rating";
 const Card = ({ product }) => {
   const Navigate = useNavigate();
   const [redirect, setRedirect] = useState(0);
@@ -76,9 +77,9 @@ const Card = ({ product }) => {
           // style={{ color: "red" }}
         >
           {/* <span className="hot">Hot</span> */}
-          {product.bidDays ?? product.bidDays > 0 ? (
+          {product.bidDays && product.bidDays > 0 && product.bidStatus === 1 ? (
             <span className="hot">
-              <Timer delayResend={product.bidDays} />
+              <Timer delayResend={product.biddingDate} />
             </span>
           ) : (
             ""
@@ -87,16 +88,23 @@ const Card = ({ product }) => {
       </div>
       <div className="product-content-wrap">
         <div className="product-category">
-          <a href="shop-grid-right.html">{product.subCategory.name}</a>
+          <a>{product.subCategory && product.subCategory.name}</a>
         </div>
         <h2>
-          <a href="shop-product-right.html">{product.name}</a>
+          <a>{product.name}</a>
         </h2>
-        <div className="rating-result" title="90%">
+        {/* <div className="rating-result" title="90%">
           <span>
             <span>90%</span>
           </span>
-        </div>
+        </div> */}
+
+        <h3 className="section-title style-1 ">
+          <Rating
+            value={product.rating}
+            text={`${product.numReviews} reviews`}
+          />
+        </h3>
         <div className="product-price">
           <span>RS {product.price} </span>
           <span className="old-price">RS {product.discount}</span>

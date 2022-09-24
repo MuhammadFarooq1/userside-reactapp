@@ -1,6 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { Button } from "reactstrap";
-import CheckOut from "./CheckOut.js";
+import React, { useState, useEffect } from "react";
 import { emptyCart } from "../../hellper/cartHellper.js";
 import DropIn from "braintree-web-drop-in-react";
 import ShowCartImage from "./ShowCartImage.js";
@@ -8,9 +6,9 @@ import { isAuthenticated } from "../../api's/auth/index.js";
 import {
   getBraintreeClientToken,
   processPayment,
+  createUserOrder,
 } from "../../api's/braintree/braintreeApi.js";
 import { Link } from "react-router-dom";
-import { creatOrder } from "../../api's/order/orderApi.js";
 
 const ShopCheckOut = ({
   checkOutProducts,
@@ -81,27 +79,32 @@ const ShopCheckOut = ({
 
         processPayment(userId, token, paymentData)
           .then((responce) => {
-            //console.log(responce)
+            // console.log(responce);
 
             // creat order
             const creatOrderData = {
               products: checkOutProducts,
               transaction_id: responce.transaction.id,
               amount: responce.transaction.amount,
-              amount: responce.transaction.amount,
               address: mydata.address,
               postalCode: mydata.postalCode,
               phone: mydata.phonNo,
             };
 
-            creatOrder(userId, token, creatOrderData);
-
-            setData({ ...mydata, success: responce.success });
-            //empty cart
-            emptyCart(() => {
-              console.log("payment sucesss cart is empty");
-              setRun(!run);
-            });
+            //   console.log("orderData", creatOrderData);
+            createUserOrder(userId, token, creatOrderData)
+              .then((responce) => {
+                setData({ ...mydata, success: responce.success });
+                //empty cart
+                emptyCart(() => {
+                  console.log("payment sucesss cart is empty");
+                  // setRun(!run);
+                });
+              })
+              .catch((error) => {
+                console.log("payment error ", error);
+                //setData({ ...data, error: error.message });
+              });
           })
           .catch((error) => {
             console.log("payment error ", error);
@@ -121,38 +124,31 @@ const ShopCheckOut = ({
           <div className="mb-25">
             <h4>Billing Details</h4>
           </div>
-          <form>
-            <div className="form-group">
-              <input
-                onChange={handleAdress}
-                value={mydata.address}
-                type="text"
-                name="billing_address"
-                required=""
-                placeholder="Address *"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                required=""
-                onChange={handlePostalCode}
-                value={mydata.postalCode}
-                type="text"
-                name="zipcode"
-                placeholder="Postcode / ZIP *"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                required=""
-                onChange={handlePhoneNo}
-                value={mydata.phonNo}
-                type="phone"
-                name="phone"
-                placeholder="Phone *"
-              />
-            </div>
-          </form>
+
+          <div className="form-group">
+            <input
+              onChange={handleAdress}
+              type="text"
+              name="billing_address"
+              placeholder="Address *"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              onChange={handlePostalCode}
+              type="text"
+              name="zipcode"
+              placeholder="Postcode / ZIP *"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              onChange={handlePhoneNo}
+              type="phone"
+              name="phone"
+              placeholder="Phone *"
+            />
+          </div>
 
           <DropIn
             options={{
@@ -194,6 +190,8 @@ const ShopCheckOut = ({
               {showError(mydata.error)}
               {showSuccess(mydata.success)}
               {showDropIn()}
+
+              {/* {JSON.stringify(checkOutProducts)} */}
               {/* <div className="mb-25">
                 <h4>Billing Details</h4>
               </div>
@@ -320,18 +318,14 @@ const ShopCheckOut = ({
                     <div className="custome-radio">
                       <input
                         className="form-check-input"
-                        required=""
                         type="radio"
                         name="payment_option"
                         id="exampleRadios3"
-                        checked=""
                       />
                       <label
                         className="form-check-label"
                         hmtlfor="exampleRadios3"
                         data-bs-toggle="collapse"
-                        data-target="#bankTranfer"
-                        aria-controls="bankTranfer"
                       >
                         Direct Bank Transfer
                       </label>
@@ -348,8 +342,6 @@ const ShopCheckOut = ({
                         required=""
                         type="radio"
                         name="payment_option"
-                        id="exampleRadios4"
-                        checked=""
                       />
                       <label
                         className="form-check-label"

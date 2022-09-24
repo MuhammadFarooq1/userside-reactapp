@@ -4,6 +4,7 @@ import {
   getProductshome,
   getProductsBySellByArrival,
   getPopularCategories,
+  bestProductbySold,
 } from "../../api's/ecommerceApi/productApi.js";
 
 import { Link } from "react-router-dom";
@@ -33,7 +34,15 @@ import ImgFeatur_4 from "../../assets/imgs/theme/icons/feature-4.png";
 import ImgFeatur_5 from "../../assets/imgs/theme/icons/feature-5.png";
 import ImgFeatur_6 from "../../assets/imgs/theme/icons/feature-6.png";
 import ImgCommon from "../../assets/imgs/shop/product-1-1.jpg";
+import thumbnail_1 from "../../assets/imgs/shop/thumbnail-1.jpg";
+import thumbnail_2 from "../../assets/imgs/shop/thumbnail-2.jpg";
 import thumbnail_3 from "../../assets/imgs/shop/thumbnail-3.jpg";
+import thumbnail_4 from "../../assets/imgs/shop/thumbnail-4.jpg";
+import thumbnail_5 from "../../assets/imgs/shop/thumbnail-5.jpg";
+import thumbnail_6 from "../../assets/imgs/shop/thumbnail-6.jpg";
+import thumbnail_7 from "../../assets/imgs/shop/thumbnail-7.jpg";
+import thumbnail_8 from "../../assets/imgs/shop/thumbnail-8.jpg";
+import thumbnail_9 from "../../assets/imgs/shop/thumbnail-9.jpg";
 import ImgmenyBanner_8 from "../../assets/imgs/banner/menu-banner-8.jpg";
 import ImgmenyBanner_7 from "../../assets/imgs/banner/menu-banner-7.jpg";
 import ImgBrandBanner_1 from "../../assets/imgs/banner/brand-2.png";
@@ -62,6 +71,7 @@ import { getAllSliders } from "../../api's/ecommerceApi/sliderApi.js";
 const Home = () => {
   const [qiuckView, setQuickView] = useState(false);
   const [allProducts, setallProducts] = useState([]);
+  const [bestProduct, setBestProduct] = useState({});
   const [allSliders, setallSliders] = useState([]);
   const [productBySell, setaProductBySell] = useState([]);
   const [popularCategoies, setPopularcategoires] = useState([]);
@@ -96,7 +106,15 @@ const Home = () => {
       }
     });
   };
-
+  const loadbestProductbySold = () => {
+    bestProductbySold().then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setBestProduct(data);
+      }
+    });
+  };
   const loadProductsByArrival = () => {
     getProductsBySellByArrival("createdAt").then((data) => {
       if (data.error) {
@@ -122,6 +140,7 @@ const Home = () => {
     loadProductsByArrival();
     loadProductsBySell();
     loadPopularCategories();
+    loadbestProductbySold();
   }, []);
   return (
     <Layout title="" discription="" className="">
@@ -812,7 +831,7 @@ const Home = () => {
                   id="myTab-1"
                   role="tablist"
                 >
-                  <li className="nav-item" role="presentation">
+                  {/* <li className="nav-item" role="presentation">
                     <button
                       className="nav-link active"
                       id="nav-tab-one-1"
@@ -825,8 +844,8 @@ const Home = () => {
                     >
                       Featured
                     </button>
-                  </li>
-                  <li className="nav-item" role="presentation">
+                  </li> */}
+                  {/* <li className="nav-item" role="presentation">
                     <button
                       className="nav-link"
                       id="nav-tab-two-1"
@@ -853,7 +872,7 @@ const Home = () => {
                     >
                       New added
                     </button>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
@@ -893,8 +912,12 @@ const Home = () => {
                         className="carausel-4-columns carausel-arrow-center"
                         id="carausel-4-columns"
                       >
-                        <div className="product-cart-wrap">
-                          <div className="product-img-action-wrap">
+                        {bestProduct && bestProduct ? (
+                          <Card product={bestProduct} />
+                        ) : (
+                          ""
+                        )}
+                        {/* <div className="product-img-action-wrap">
                             <div className="product-img product-img-zoom">
                               <a href="shop-product-right.html">
                                 <img
@@ -964,13 +987,12 @@ const Home = () => {
                                 <i className="fi-rs-shopping-bag-add"></i>
                               </a>
                             </div>
-                          </div>
-                        </div>
+                          </div> */}
                       </div>
                     </div>
                   </div>
                   {/* <!--End tab-pane--> */}
-                  <div
+                  {/* <div
                     className="tab-pane fade"
                     id="tab-two-1"
                     role="tabpanel"
@@ -1151,7 +1173,7 @@ const Home = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 {/* <!--End tab-content--> */}
               </div>
@@ -1159,6 +1181,8 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        {/* gggf */}
         <section className="mb-50">
           <div className="container">
             <div className="row">
@@ -1212,9 +1236,7 @@ const Home = () => {
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Fish Print Patched T-shirt
-                        </a>
+                        <a>Fish Print Patched T-shirt</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1224,8 +1246,8 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-4.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_4} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
@@ -1242,15 +1264,13 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-5.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_5} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Multi-color Stripe Circle Print T-Shirt
-                        </a>
+                        <a>Multi-color Stripe Circle Print T-Shirt</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1267,15 +1287,13 @@ const Home = () => {
                 <div className="product-list-small wow fadeIn animated">
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-6.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_6} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Geometric Printed Long Sleeve Blosue
-                        </a>
+                        <a>Geometric Printed Long Sleeve Blosue</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1285,8 +1303,8 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-7.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_7} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
@@ -1303,15 +1321,13 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-8.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_8} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Daisy Floral Print Straps Jumpsuit
-                        </a>
+                        <a>Daisy Floral Print Straps Jumpsuit</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1328,15 +1344,13 @@ const Home = () => {
                 <div className="product-list-small wow fadeIn animated">
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-9.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_9} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Floral Print Casual Cotton Dress
-                        </a>
+                        <a>Floral Print Casual Cotton Dress</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1346,15 +1360,13 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-1.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_1} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Ruffled Solid Long Sleeve Blouse
-                        </a>
+                        <a>Ruffled Solid Long Sleeve Blouse</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1364,15 +1376,13 @@ const Home = () => {
                   </article>
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
-                        <img src="assets/imgs/shop/thumbnail-2.jpg" alt="" />
+                      <a>
+                        <img src={thumbnail_2} alt="" />
                       </a>
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
-                          Multi-color Print V-neck T-Shirt
-                        </a>
+                        <a>Multi-color Print V-neck T-Shirt</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
