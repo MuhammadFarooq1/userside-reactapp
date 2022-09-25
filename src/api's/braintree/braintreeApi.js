@@ -32,6 +32,7 @@ export const processPayment = (userId, token, paymentData) => {
     .catch((error) => console.log(error));
 };
 export const createUserOrder = (userId, token, orderData) => {
+  // console.log("dkjs", JSON.stringify({ or: orderData }));
   return fetch(`${API}/order/create/${userId}`, {
     method: "POST",
     headers: {

@@ -1,3 +1,29 @@
+// export function AddItemCart(item, next) {
+//   let cart = [];
+
+//   if (typeof window !== "undefined") {
+//     if (localStorage.getItem("cart")) {
+//       cart = JSON.parse(localStorage.getItem("cart"));
+//     }
+//     cart.push({
+//       _id: item._id,
+//       image: item.image,
+//       name: item.name,
+//       userID: item.userID._id,
+//       discription: item.discription,
+//       price: item.price,
+//       quantity: item.quantity,
+//       subCategory: item.subCategory._id,
+//       count: 1,
+//     });
+
+//     cart = Array.from(new Set(cart.map((p) => p._id))).map((id) => {
+//       return cart.find((p) => p._id === id);
+//     });
+//     localStorage.setItem("cart", JSON.stringify(cart));
+//     next();
+//   }
+// }
 export function AddItemCart(item, next) {
   let cart = [];
 
@@ -17,7 +43,7 @@ export function AddItemCart(item, next) {
     next();
   }
 }
-// add bid item to cart 
+// add bid item to cart
 // count the total item in the cart
 export const countTotalAddItemInCart = () => {
   if (typeof window !== "undefined") {

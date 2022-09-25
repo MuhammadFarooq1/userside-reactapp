@@ -80,10 +80,29 @@ const ShopCheckOut = ({
         processPayment(userId, token, paymentData)
           .then((responce) => {
             // console.log(responce);
-
+            let products = [];
+            products = checkOutProducts.map((checkProducts) => ({
+              _id: checkProducts._id,
+              name: checkProducts.name,
+              price: checkProducts.price,
+              discription: checkProducts.discription,
+              subCategory: checkProducts.subCategory._id,
+              userID: checkProducts.userID._id,
+              quantity: checkProducts.quantity,
+              count: checkProducts.count,
+            }));
+            // products.push({
+            //   _id: checkOutProducts._id,
+            //   name: checkOutProducts.name,
+            //   price: checkOutProducts.price,
+            //   quantity: checkOutProducts.quantity,
+            //   //  userID: checkOutProducts.userID.id,
+            //   // subCategory: checkOutProducts.subCategory.id,
+            //   count: checkOutProducts.count,
+            // });
             // creat order
             const creatOrderData = {
-              products: checkOutProducts,
+              products: products,
               transaction_id: responce.transaction.id,
               amount: responce.transaction.amount,
               address: mydata.address,
@@ -96,10 +115,10 @@ const ShopCheckOut = ({
               .then((responce) => {
                 setData({ ...mydata, success: responce.success });
                 //empty cart
-                emptyCart(() => {
-                  console.log("payment sucesss cart is empty");
-                  // setRun(!run);
-                });
+                // emptyCart(() => {
+                //   console.log("payment sucesss cart is empty");
+                //   // setRun(!run);
+                // });
               })
               .catch((error) => {
                 console.log("payment error ", error);

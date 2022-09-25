@@ -667,7 +667,7 @@ const Home = () => {
                   </div>
                   <div className="deal-content">
                     <h6 className="product-title">
-                      <a href="shop-product-right.html">
+                      <a >
                         Summer Collection New Morden Design
                       </a>
                     </h6>
@@ -701,7 +701,7 @@ const Home = () => {
                   </div>
                   <div className="deal-content">
                     <h6 className="product-title">
-                      <a href="shop-product-right.html">
+                      <a >
                         Try something new on vacation
                       </a>
                     </h6>
@@ -1230,7 +1230,7 @@ const Home = () => {
                 <div className="product-list-small wow fadeIn animated">
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a href="shop-product-right.html">
+                      <a >
                         <img src={thumbnail_3} alt="" />
                       </a>
                     </figure>
@@ -1252,7 +1252,7 @@ const Home = () => {
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
+                        <a >
                           Vintage Floral Print Dress
                         </a>
                       </h4>
@@ -1309,7 +1309,7 @@ const Home = () => {
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a href="shop-product-right.html">
+                        <a >
                           Print Patchwork Maxi Dress
                         </a>
                       </h4>
