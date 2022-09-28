@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import {
   getAllProducts,
+  getBiddONProducts,
   getProductshome,
   getProductsBySellByArrival,
   getPopularCategories,
@@ -71,6 +72,7 @@ import { getAllSliders } from "../../api's/ecommerceApi/sliderApi.js";
 const Home = () => {
   const [qiuckView, setQuickView] = useState(false);
   const [allProducts, setallProducts] = useState([]);
+  const [allProductsBidOn, setallProductsBidOn] = useState([]);
   const [bestProduct, setBestProduct] = useState({});
   const [allSliders, setallSliders] = useState([]);
   const [productBySell, setaProductBySell] = useState([]);
@@ -85,6 +87,15 @@ const Home = () => {
         setError(data.error);
       } else {
         setallProducts(data);
+      }
+    });
+  };
+  const getProductsBidOn = () => {
+    getBiddONProducts().then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setallProductsBidOn(data);
       }
     });
   };
@@ -137,6 +148,7 @@ const Home = () => {
   useEffect(() => {
     getSlider();
     getProducts();
+    getProductsBidOn();
     loadProductsByArrival();
     loadProductsBySell();
     loadPopularCategories();
@@ -435,10 +447,24 @@ const Home = () => {
                         New added
                       </button>
                     </li>
+                    <li className="nav-item" role="presentation">
+                      <button
+                        className="nav-link"
+                        id="nav-tab-four"
+                        data-bs-toggle="tab"
+                        data-bs-target="#tab-four"
+                        type="button"
+                        role="tab"
+                        aria-controls="tab-tab-four"
+                        aria-selected="false"
+                      >
+                        Bidding Product
+                      </button>
+                    </li>
                   </ul>
-                  <a href="#" className="view-more d-none d-md-flex">
+                  {/* <a href="#" className="view-more d-none d-md-flex">
                     View More<i className="fi-rs-angle-double-small-right"></i>
-                  </a>
+                  </a> */}
                 </div>
                 {/* <!--End nav-tabs--> */}
                 <div
@@ -590,6 +616,42 @@ const Home = () => {
                     </div>
                     {/* <!--End product-grid-4--> */}
                   </div>
+                  <div
+                    className="tab-pane fade"
+                    id="tab-four"
+                    role="tabpanel"
+                    aria-labelledby="tab-four"
+                  >
+                    {allProductsBidOn && allProductsBidOn.length > 0 ? (
+                      <div className="row product-grid-4">
+                        {allProductsBidOn.map((Productsbidon, keyBidOn) => (
+                          <div
+                            key={keyBidOn}
+                            className="col-lg-4 col-md-4 col-12 col-sm-6"
+                          >
+                            <Card product={Productsbidon} />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-4 text-center">
+                        <div>
+                          <lord-icon
+                            src="https://cdn.lordicon.com/msoeawqm.json"
+                            trigger="loop"
+                            colors="primary:#405189,secondary:#0ab39c"
+                            style={{ width: "72px", height: "72px" }}
+                          ></lord-icon>
+                        </div>
+
+                        <div className="mt-4">
+                          <h5>Sorry! We don't any bid product yet</h5>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* <!--End product-grid-4--> */}
+                  </div>
                   {/* <!--En tab three (New added)--> */}
                 </div>
                 {/* <!--End tab-content--> */}
@@ -667,9 +729,7 @@ const Home = () => {
                   </div>
                   <div className="deal-content">
                     <h6 className="product-title">
-                      <a >
-                        Summer Collection New Morden Design
-                      </a>
+                      <a>Summer Collection New Morden Design</a>
                     </h6>
                     <div className="product-price">
                       <span className="new-price">$139.00</span>
@@ -701,9 +761,7 @@ const Home = () => {
                   </div>
                   <div className="deal-content">
                     <h6 className="product-title">
-                      <a >
-                        Try something new on vacation
-                      </a>
+                      <a>Try something new on vacation</a>
                     </h6>
                     <div className="product-price">
                       <span className="new-price">$178.00</span>
@@ -1230,7 +1288,7 @@ const Home = () => {
                 <div className="product-list-small wow fadeIn animated">
                   <article className="row align-items-center">
                     <figure className="col-md-4 mb-0">
-                      <a >
+                      <a>
                         <img src={thumbnail_3} alt="" />
                       </a>
                     </figure>
@@ -1252,9 +1310,7 @@ const Home = () => {
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a >
-                          Vintage Floral Print Dress
-                        </a>
+                        <a>Vintage Floral Print Dress</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>
@@ -1309,9 +1365,7 @@ const Home = () => {
                     </figure>
                     <div className="col-md-8 mb-0">
                       <h4 className="title-small">
-                        <a >
-                          Print Patchwork Maxi Dress
-                        </a>
+                        <a>Print Patchwork Maxi Dress</a>
                       </h4>
                       <div className="product-price">
                         <span>$238.85 </span>

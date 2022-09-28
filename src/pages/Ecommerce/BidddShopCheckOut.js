@@ -1,16 +1,14 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Button } from "reactstrap";
-import CheckOut from "./CheckOut.js";
-import { emptyCart } from "../../hellper/cartHellper.js";
+import { Link, useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
 import ShowCartImage from "./ShowCartImage.js";
 import { isAuthenticated } from "../../api's/auth/index.js";
 import {
   getBraintreeClientToken,
   processPayment,
+  createUserOrder,
+  cancelUserBiddAfterPayment,
 } from "../../api's/braintree/braintreeApi.js";
-import { Link } from "react-router-dom";
-import { creatOrder } from "../../api's/order/orderApi.js";
 
 const BidShopCheckOut = ({
   checkOutProducts,
@@ -26,7 +24,7 @@ const BidShopCheckOut = ({
     phonNo: "",
     postalCode: "",
   });
-
+  const Navigate = useNavigate();
   const userId = isAuthenticated() && isAuthenticated().user._id;
   const token = isAuthenticated() && isAuthenticated().token;
 
@@ -87,26 +85,53 @@ const BidShopCheckOut = ({
         processPayment(userId, token, paymentData)
           .then((responce) => {
             //console.log(responce)
+            let products = [];
+            products = checkOutProducts.map((checkProducts) => ({
+              _id: checkProducts.product._id,
+              name: checkProducts.product.name,
+              price: checkProducts.biddingAmount,
+              discription: checkProducts.product.discription,
+              subCategory: checkProducts.product.subCategory,
+              userID: checkProducts.seller._id,
+              quantity: checkProducts.product.quantity,
+              count: checkProducts.bidQuantity,
+            }));
 
-            // creat order
             const creatOrderData = {
-              products: checkOutProducts.product,
+              products: products,
               transaction_id: responce.transaction.id,
               amount: responce.transaction.amount,
-              //  amount: responce.transaction.amount,
               address: mydata.address,
               postalCode: mydata.postalCode,
               phone: mydata.phonNo,
             };
 
-            creatOrder(userId, token, creatOrderData);
+            // creat order
+            // const creatOrderData = {
+            //   products: checkOutProducts.product,
+            //   transaction_id: responce.transaction.id,
+            //   amount: responce.transaction.amount,
+            //   //  amount: responce.transaction.amount,
+            //   address: mydata.address,
+            //   postalCode: mydata.postalCode,
+            //   phone: mydata.phonNo,
+            // };
 
-            setData({ ...mydata, success: responce.success });
-            //empty cart
-            emptyCart(() => {
-              console.log("payment sucesss cart is empty");
-              setRun(!run);
-            });
+            createUserOrder(userId, token, creatOrderData)
+              .then((responce) => {
+                setData({ ...mydata, success: responce.success });
+                cancelUserBiddAfterPayment(userId, token).then((data) => {
+                  if (data.error) {
+                    setData({ ...mydata, error: data.error });
+                  } else {
+                    Navigate("/");
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log("creat order error ", error);
+                //setData({ ...data, error: error.message });
+              });
           })
           .catch((error) => {
             console.log("payment error ", error);
@@ -199,6 +224,7 @@ const BidShopCheckOut = ({
               {showError(mydata.error)}
               {showSuccess(mydata.success)}
               {showDropIn()}
+              {/* {JSON.stringify(checkOutProducts)} */}
               {/* <div className="mb-25">
                 <h4>Billing Details</h4>
               </div>
@@ -262,7 +288,7 @@ const BidShopCheckOut = ({
                 </div>
               </form> */}
             </div>
-            <div className="col-md-6">
+            <div className="col-md-6 mt-40">
               <div className="order_review">
                 <div className="mb-20">
                   <h4>Your Orders</h4>
@@ -323,7 +349,7 @@ const BidShopCheckOut = ({
                 </div>
 
                 <div className="bt-1 border-color-1 mt-30 mb-30"></div>
-                <div className="payment_method">
+                {/* <div className="payment_method">
                   <div className="mb-25">
                     <h5>Payment</h5>
                   </div>
@@ -335,7 +361,6 @@ const BidShopCheckOut = ({
                         type="radio"
                         name="payment_option"
                         id="exampleRadios3"
-                        checked=""
                       />
                       <label
                         className="form-check-label"
@@ -360,7 +385,6 @@ const BidShopCheckOut = ({
                         type="radio"
                         name="payment_option"
                         id="exampleRadios4"
-                        checked=""
                       />
                       <label
                         className="form-check-label"
@@ -382,7 +406,7 @@ const BidShopCheckOut = ({
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

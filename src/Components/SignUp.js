@@ -67,9 +67,9 @@ const SignUp = () => {
       </div>
       <section className="pt-150 pb-150">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-10 m-auto">
-              <div className="row">
+          <div>
+            <div>
+              <div className="row ml-200">
                 <div className="col-lg-1"></div>
                 <div className="col-lg-6">
                   <div className="login_wrap widget-taber-content p-30 background-white border-radius-5">
@@ -137,10 +137,10 @@ const SignUp = () => {
                               </label>
                             </div>
                           </div>
-                          <a href="page-privacy-policy.html">
+                          {/* <a href="page-privacy-policy.html">
                             <i className="fi-rs-book-alt mr-5 text-muted"></i>
                             Lean more
-                          </a>
+                          </a> */}
                         </div>
                         <div className="form-group">
                           <button
@@ -152,10 +152,10 @@ const SignUp = () => {
                           </button>
                         </div>
                       </form>
-                      <div className="divider-text-center mt-15 mb-15">
+                      <div className="hidden  divider-text-center mt-15 mb-15">
                         <span> or</span>
                       </div>
-                      <ul className="btn-login list_none text-center mb-15">
+                      <ul className="hidden btn-login list_none text-center mb-15">
                         <li>
                           <a
                             href="#"

@@ -28,11 +28,13 @@ import {
 } from "../../api's/bidding/bidApi.js";
 import {
   readProductDetail,
+  creatComplaints,
   listOfRelatedProduct,
   createProductReview,
 } from "../../api's/ecommerceApi/productApi";
 import { useParams } from "react-router-dom";
 import ShowSingalProductImage from "./ShowSingalProduct";
+import MyCard from "./Card";
 const ProductDetaile = () => {
   const pid = useParams();
   const Navigate = useNavigate();
@@ -67,8 +69,24 @@ const ProductDetaile = () => {
     bidError: "",
     updatedBidData: "",
   });
+  const [complainValues, setComplainValues] = useState({
+    userComplainProduct: "",
+    customer: "",
+    seller: "",
+    cdiscription: "",
+    complainError: "",
+    updatedComplainData: "",
+  });
   const { rating, comment, createdReview, loading, reviewerror, formData } =
     values;
+  const {
+    userComplainProduct,
+    customer,
+    seller,
+    cdiscription,
+    complainError,
+    updatedComplainData,
+  } = complainValues;
   const {
     userBiddingProduct,
     biddingAmount,
@@ -152,8 +170,31 @@ const ProductDetaile = () => {
       }
     );
   };
+  const clickComplaintsSubmit = (event) => {
+    setComplainValues({ ...complainValues, complainError: "" });
+    const creatComplaintsData = {
+      seller: product.userID,
+      customer: user._id,
+      productId: pid.productId,
+      discription: cdiscription,
+    };
+    creatComplaints(user._id, token, creatComplaintsData).then((data) => {
+      if (data.error) {
+        setComplainValues({ ...complainValues, error: data.error });
+      } else {
+        setComplainValues({
+          ...complainValues,
+          cdiscription: "",
+        });
+      }
+    });
+  };
   const handleBidChange = (name) => (e) => {
     setBidValues({ ...bidValues, bidError: false, [name]: e.target.value });
+  };
+
+  const handleComplaintsChange = (event) => {
+    setComplainValues({ ...complainValues, cdiscription: event.target.value });
   };
   const clickUpdateSubmit = (e) => {
     e.preventDefault();
@@ -243,7 +284,8 @@ const ProductDetaile = () => {
         // setError(data.error);
         console.log("bid eror", response.error);
       } else {
-        setRedirect(3);
+        //  setRedirect(3);
+        initUserbids(pid.productId, userId, token);
       }
     });
   };
@@ -392,7 +434,7 @@ const ProductDetaile = () => {
                                       onClick={clickUpdateSubmit}
                                       className="btn btn-success w-sm"
                                     >
-                                      Submit
+                                      Update
                                     </button>
                                   </div>
                                 </Row>
@@ -940,93 +982,94 @@ const ProductDetaile = () => {
                     </div>
 
                     {/* <!--comment form--> */}
-                    <div className="comment-form">
-                      <h4 className="mb-15">Add a review</h4>
-                      <div className="product-rate d-inline-block mb-30"></div>
-                      <div className="row">
-                        <div className="col-lg-8 col-md-12">
-                          <form
-                            onSubmit={clickSubmit}
-                            className="form-contact comment_form"
-                            id="commentForm"
-                          >
-                            <div className="row">
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <label htmlFor="rating">Rating</label>
-                                  <select
-                                    className="form-control mt-2"
-                                    onChange={handleChange("rating")}
-                                    name={rating}
-                                  >
-                                    <option value="">Select</option>
-                                    <option value="1">1- Bad</option>
-                                    <option value="2">2- Fair</option>
-                                    <option value="3">3- Good</option>
-                                    <option value="4">4- Very good</option>
-                                    <option value="5">5- Excelent</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="col-12">
-                                <div className="form-group">
-                                  <textarea
-                                    className="form-control w-100"
-                                    onChange={handleChange("comment")}
-                                    name="comment"
-                                    id="comment"
-                                    cols="30"
-                                    rows="9"
-                                    placeholder="Write Comment"
-                                  ></textarea>
-                                </div>
+                    {isAuthenticated && isAuthenticated ? (
+                      <div className="comment-form">
+                        <div className="row">
+                          <div className="col-lg-6 col-md-6">
+                            <h4 className="mb-15">Add a review</h4>
+                            <div className="product-rate d-inline-block mb-30"></div>
+                            <form
+                              onSubmit={clickSubmit}
+                              className="form-contact comment_form"
+                              id="commentForm"
+                            >
+                              <div className="form-group">
+                                <label htmlFor="rating">Rating</label>
+                                <select
+                                  className="form-control mt-2"
+                                  onChange={handleChange("rating")}
+                                  name={rating}
+                                >
+                                  <option value="">Select</option>
+                                  <option value="1">1- Bad</option>
+                                  <option value="2">2- Fair</option>
+                                  <option value="3">3- Good</option>
+                                  <option value="4">4- Very good</option>
+                                  <option value="5">5- Excelent</option>
+                                </select>
                               </div>
 
-                              {/* <div className="col-sm-6">
-                                <div className="form-group">
-                                  <input
-                                    className="form-control"
-                                    name="name"
-                                    id="name"
-                                    type="text"
-                                    placeholder="Name"
-                                  />
-                                </div>
+                              <div className="form-group">
+                                <textarea
+                                  className="form-control w-100"
+                                  onChange={handleChange("comment")}
+                                  name="comment"
+                                  id="comment"
+                                  cols="3"
+                                  rows="3"
+                                  placeholder="Write Comment"
+                                ></textarea>
                               </div>
-                              <div className="col-sm-6">
-                                <div className="form-group">
-                                  <input
-                                    className="form-control"
-                                    name="email"
-                                    id="email"
-                                    type="email"
-                                    placeholder="Email"
-                                  />
-                                </div>
+
+                              <div className="form-group">
+                                <button className="button button-contactForm">
+                                  Submit Review
+                                </button>
                               </div>
-                              <div className="col-12">
-                                <div className="form-group">
-                                  <input
-                                    className="form-control"
-                                    name="website"
-                                    id="website"
-                                    type="text"
-                                    placeholder="Website"
-                                  />
-                                </div>
-                              </div> */}
+                            </form>
+                          </div>
+                          <div className="col-lg-6 col-md-6">
+                            <h4 className="mb-15">Seller Complaints</h4>
+                            <div className=" d-inline-block mb-50"></div>{" "}
+                            <label htmlFor="rating">Complaints</label>
+                            <div className="form-group mt-30">
+                              Please give authentic feed back other wise your
+                              account will be in risk
+                            </div>
+                            <div className="form-group mt-40">
+                              <textarea
+                                className="form-control w-100"
+                                // onChange={handleComplaintsChange(
+                                //   "cdiscription"
+                                // )}
+                                onChange={handleComplaintsChange}
+                                name="cdiscription"
+                                id="comment"
+                                cols="3"
+                                rows="3"
+                                placeholder="Write Comment"
+                              ></textarea>
                             </div>
                             <div className="form-group">
-                              <button className="button button-contactForm">
-                                Submit Review
+                              <button
+                                onClick={clickComplaintsSubmit}
+                                className="button button-contactForm"
+                              >
+                                Submit complaint
                               </button>
                             </div>
-                          </form>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <p>
+                        <Link to={"signin"}>Sign in</Link> for review and
+                        complaints
+                      </p>
+                    )}
                   </div>
                 </div>
+
                 <div className="row mt-60">
                   <div className="col-12">
                     <h3 className="section-title style-1 mb-30">
@@ -1041,7 +1084,7 @@ const ProductDetaile = () => {
                             key={keyrelatedProducts}
                             className="col-lg-3 col-md-4 col-12 col-sm-6"
                           >
-                            <myCard product={relatedProducts} />
+                            <MyCard product={relatedProducts} />
                           </div>
                         )
                       )}

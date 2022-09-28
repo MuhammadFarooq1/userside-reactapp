@@ -114,11 +114,11 @@ const ShopCheckOut = ({
             createUserOrder(userId, token, creatOrderData)
               .then((responce) => {
                 setData({ ...mydata, success: responce.success });
-                //empty cart
-                // emptyCart(() => {
-                //   console.log("payment sucesss cart is empty");
-                //   // setRun(!run);
-                // });
+                //  emptyCart;
+                emptyCart(() => {
+                  console.log("payment sucesss cart is empty");
+                  setRun(!run);
+                });
               })
               .catch((error) => {
                 console.log("payment error ", error);

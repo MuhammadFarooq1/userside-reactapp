@@ -40,6 +40,27 @@ export const listOfProductsInCategory = (categoryId) => {
     })
     .catch((error) => console.log(error));
 };
+
+export const creatComplaints = async (userId, token, creatComplaintsData) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8000/likenAdmin/complain/create/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        // body: creatComplaintsData,
+        body: JSON.stringify(creatComplaintsData),
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    return error;
+  }
+};
 export const listOfProductsInUserID = (userId) => {
   return fetch(`${API}/product/userProducts/${userId}`, {
     method: "GET",
@@ -61,6 +82,16 @@ export const bestProductbySold = () => {
 export const getAllProducts = async () => {
   try {
     const response = await fetch(`${API}/getallproducts`, {
+      method: "GET",
+    });
+    return await response.json();
+  } catch (error) {
+    return console.log(error);
+  }
+};
+export const getBiddONProducts = async () => {
+  try {
+    const response = await fetch(`${API}/product/bidd/on`, {
       method: "GET",
     });
     return await response.json();

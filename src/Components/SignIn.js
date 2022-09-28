@@ -78,10 +78,10 @@ const SignIn = () => {
       </div>
       <section className="pt-150 pb-150">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-10 m-auto">
-              <div className="row">
-                <div className="col-lg-5">
+          <div>
+            <div>
+              <div className="row ml-200">
+                <div className="col-lg-8 ">
                   <div className="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
                     <div className="padding_eight_all bg-white">
                       <div className="heading_s1">

@@ -32,7 +32,7 @@ export const processPayment = (userId, token, paymentData) => {
     .catch((error) => console.log(error));
 };
 export const createUserOrder = (userId, token, orderData) => {
-  // console.log("dkjs", JSON.stringify({ or: orderData }));
+  //console.log("dkjs", JSON.stringify({ or: orderData }));
   return fetch(`${API}/order/create/${userId}`, {
     method: "POST",
     headers: {
@@ -46,4 +46,22 @@ export const createUserOrder = (userId, token, orderData) => {
       return response.json();
     })
     .catch((error) => console.log(error));
+};
+
+export const cancelUserBiddAfterPayment = async (userID, token) => {
+  try {
+    const response = await fetch(
+      `${API}/bid/cancel-user-bid/payment-success/${userID}`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    return error;
+  }
 };
