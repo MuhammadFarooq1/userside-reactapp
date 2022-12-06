@@ -329,7 +329,7 @@ const ShopCheckOut = ({
                 </div>
 
                 <div className="bt-1 border-color-1 mt-30 mb-30"></div>
-                <div className="payment_method">
+                {/* <div className="payment_method">
                   <div className="mb-25">
                     <h5>Payment</h5>
                   </div>
@@ -382,7 +382,7 @@ const ShopCheckOut = ({
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

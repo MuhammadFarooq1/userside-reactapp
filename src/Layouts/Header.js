@@ -1,6 +1,8 @@
 import ImgLogo from "../assets/imgs/theme/logo.svg";
+import ImgLogo2 from "../assets/imgs/theme/logo2.jpg";
 import ImgIconHeart from "../assets/imgs/theme/icons/icon-heart.svg";
 import ImgIconCart from "../assets/imgs/theme/icons/icon-cart.svg";
+import BiddcartImg from "../assets/imgs/theme/icons/Biddcart.svg";
 import Imgfacebook from "../assets/imgs/theme/icons/icon-facebook.svg";
 import ImgTwitter from "../assets/imgs/theme/icons/icon-twitter.svg";
 import ImgInstagram from "../assets/imgs/theme/icons/icon-instagram.svg";
@@ -97,7 +99,8 @@ const Header = () => {
             <div className="header-wrap">
               <div className="logo logo-width-1">
                 <Link to={"/"}>
-                  <img alt="Liken store" src={ImgLogo} />
+                  {/* <img alt="Liken store" src={ImgLogo} /> */}
+                  <img alt="Liken store" src={ImgLogo2} />
                 </Link>
               </div>
               <div className="header-right">
@@ -201,10 +204,10 @@ const Header = () => {
                     </div>
                     <div className="header-action-icon-2">
                       <Link className="mini-cart-icon" to={"/bidd/cart"}>
-                        <img alt="Evara" src={ImgIconCart} />
-                        <span className="pro-count blue">
+                        <img alt="Evara" src={BiddcartImg} />
+                        {/* <span className="pro-count blue">
                           {countTotalAddItemInCart()}
-                        </span>
+                        </span> */}
                       </Link>
                     </div>
                     <ProfileDropdown />
@@ -219,7 +222,7 @@ const Header = () => {
             <div className="header-wrap header-space-between position-relative">
               <div className="logo logo-width-1 d-block d-lg-none">
                 <Link to={"/"}>
-                  <img alt="logo" src={ImgLogo} />
+                  <img alt="logo" src={ImgLogo2} />
                 </Link>
               </div>
               <div className="header-nav d-none d-lg-flex">
@@ -869,12 +872,12 @@ const Header = () => {
                           <li>
                             <Link to={"/cart"}>Shop – Cart</Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <Link to={"/checkout"}>Shop – Checkout</Link>
-                          </li>
+                          </li> */}
                         </ul>
                       </li>
-                      <li className="position-static">
+                      {/* <li className="position-static">
                         <a href="#">
                           Mega menu <i className="fi-rs-angle-down"></i>
                         </a>
@@ -1009,7 +1012,7 @@ const Header = () => {
                             </div>
                           </li>
                         </ul>
-                      </li>
+                      </li> */}
 
                       <li>
                         <a>
@@ -1028,19 +1031,19 @@ const Header = () => {
                           <li>
                             <Link to={"/signin"}> login/register</Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <a href="page-purchase-guide.html">
                               Purchase Guide
                             </a>
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <a href="page-privacy-policy.html">
                               Privacy Policy
                             </a>
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <a href="page-terms.html">Terms of Service</a>
-                          </li>
+                          </li> */}
                           <li>
                             <Link to={"/404"}> 404 Page</Link>
                           </li>

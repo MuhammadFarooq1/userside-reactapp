@@ -89,6 +89,17 @@ export const getAllProducts = async () => {
     return console.log(error);
   }
 };
+
+export const getAllProductsByHome = async () => {
+  try {
+    const response = await fetch(`${API}/home/product-all`, {
+      method: "GET",
+    });
+    return await response.json();
+  } catch (error) {
+    return console.log(error);
+  }
+};
 export const getBiddONProducts = async () => {
   try {
     const response = await fetch(`${API}/product/bidd/on`, {

@@ -462,9 +462,12 @@ const Home = () => {
                       </button>
                     </li>
                   </ul>
-                  {/* <a href="#" className="view-more d-none d-md-flex">
+                  <Link
+                    to="/allProducts"
+                    className="view-more d-none d-md-flex"
+                  >
                     View More<i className="fi-rs-angle-double-small-right"></i>
-                  </a> */}
+                  </Link>
                 </div>
                 {/* <!--End nav-tabs--> */}
                 <div

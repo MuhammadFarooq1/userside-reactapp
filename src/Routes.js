@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "../src/components/SignUp";
 import SignIn from "../src/components/SignIn";
 import Home from "../src/pages/core/Home";
+import AllProducts from "../src/pages/core/AllProducts";
 import Wishlist from "../src/pages/ecommerce/Wishlist";
 import Cart from "../src/pages/ecommerce/Cart";
 import BidCart from "../src/pages/ecommerce/BidCart";
@@ -26,6 +27,7 @@ const MyRoutes = () => {
       {/* <Menu /> */}
       <Routes>
         <Route path="/" exact element={<Home />} />
+        <Route path="/allProducts" exact element={<AllProducts />} />
         <Route path="/signin" exact element={<SignIn />} />
         <Route path="/signup" exact element={<SignUp />} />
         <Route path="/user/dashboard" exact element={<UserDashboard />} />
@@ -53,7 +55,6 @@ const MyRoutes = () => {
           exact
           element={<ProductByUserID />}
         />
-
         <Route path="/contactus" exact element={<ContacUs />} />
         <Route path="/account" exact element={<Account />} />
         <Route path="/404" exact element={<FourOfour />} />
